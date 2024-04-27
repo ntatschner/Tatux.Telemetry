@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"github.com/labstack/echo/v4"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
@@ -20,6 +21,7 @@ var influxDBClient influxdb2.Client
 // Connect to InfluxDB
 func connectToInfluxDB() {
 	influxDBClient = influxdb2.NewClient(influxDBUrl, influxDBToken)
+	log.Println("Connected to InfluxDB")
 }
 
 // Add data to InfluxDB
@@ -33,6 +35,7 @@ func addToInfluxDB() {
 	)
 	// Write point immediately
 	writeAPI.WritePoint(p)
+	log.Println("Data added to InfluxDB")
 }
 
 // Handler for PUT method
@@ -52,5 +55,6 @@ func main() {
 	e.PUT("/", putHandler)
 
 	// Start server
+	log.Println("Starting server on :1323")
 	e.Start(":1323")
 }
