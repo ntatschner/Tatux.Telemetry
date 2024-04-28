@@ -1,25 +1,27 @@
-# Start from golang base image
-FROM golang:1.16-alpine
+FROM golang:bullseye
+
+LABEL Author="Nigel Tatschner (ntatschner@gmail.com)"
 
 ENV LISTENONPORT=9000 INFLUXDB_URL='http://localhost' INFLUXDB_PORT=8086 INFLUXDB_ORG='DefaultOrg' INFLUXDB_TOKEN='' INFLUXDB_BUCKET=''
 
-# Set the current working directory inside the container
-WORKDIR /app
+ENV APP_HOME=/app
+
+RUN mkdir -p "$APP_HOME"
+
+WORKDIR "$APP_HOME"
 
 # Copy go mod and sum files
-COPY ./src/go.mod ./src/go.sum ./
+COPY ./src/api/* ${APP_HOME}
 
-# Download all dependencies
-RUN go mod download
+RUN go get github.com/ntatschner/Tatux.Telemetry/src/api/app
 
 # Copy the source code
-COPY ./src .
+COPY ./src/api .
 
-# Build the application
-RUN go build -o main .
+RUN go build -o main main.go
 
 # Expose port for the application
 EXPOSE $LISTENONPORT
 
 # Command to run the application
-CMD ["/app/main"]
+CMD ["./main"]

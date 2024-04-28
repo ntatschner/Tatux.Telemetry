@@ -1,8 +1,8 @@
-package main
+package app
 
 import (
 	"log"
-	"net/http"
+	ginrouter "github.com/gin-gonic/gin"
 	"github.com/labstack/echo/v4"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
@@ -47,17 +47,14 @@ func putHandler(c echo.Context) error {
 	return c.String(http.StatusOK, "Data added to InfluxDB")
 }
 
-func main() {
-	// Connect to InfluxDB
-	connectToInfluxDB()
-
-	// Echo instance
-	e := echo.New()
+func Start() {
+	// Starting the router
+	router := ginrouter.Default()
 
 	// Routes
-	e.PUT("/", putHandler)
+	router.PUT("/api", putHandler)
 
 	// Start server
 	log.Println("Starting server on :" + $listenPort)
-	e.Start(":" + $listenPort)
+	router.Start(":" + $listenPort)
 }
