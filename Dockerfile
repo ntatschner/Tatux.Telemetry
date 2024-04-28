@@ -1,7 +1,7 @@
 # Start from golang base image
 FROM golang:1.16-alpine
 
-ENV LISTENONPORT=9000 DBHOST='localhost' DBPORT=8086 DBNAME='mydb' DBUSER='myuser' DBPASS='mypassword'
+ENV LISTENONPORT=9000 INFLUXDB_URL='http://localhost' INFLUXDB_PORT=8086 INFLUXDB_ORG='DefaultOrg' INFLUXDB_TOKEN='' INFLUXDB_BUCKET=''
 
 # Set the current working directory inside the container
 WORKDIR /app

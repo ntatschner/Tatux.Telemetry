@@ -7,23 +7,21 @@ import (
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
 
-// Connection parameters
+// InfluxDB connection parameters
 
-func connectToInfluxDB() {
-	const (
-		influxDBUrl := os.Getenv("INFLUXDB_URL")
-		influxDBToken := os.Getenv("INFLUXDB_TOKEN")
-		influxDBOrg := os.Getenv("INFLUXDB_ORG")
-		influxDBBucket := os.Getenv("INFLUXDB_BUCKET")
-		influxDBClient = influxdb2.NewClient(influxDBUrl, influxDBToken)
-	)
-	log.Println("Connected to InfluxDB")
-}
+const (
+	influxDBUrl := os.Getenv("INFLUXDB_URL") + ":" + os.Getenv("INFLUXDB_PORT")
+	influxDBToken := os.Getenv("INFLUXDB_TOKEN")
+	influxDBOrg := os.Getenv("INFLUXDB_ORG")
+	influxDBBucket := os.Getenv("INFLUXDB_BUCKET")
+	listenPort := os.Getenv("LISTENONPORT")
+)
 
 // InfluxDB client
 var influxDBClient influxdb2.Client
 
-// Connect to InfluxDB
+// Connection parameters
+
 func connectToInfluxDB() {
 	influxDBClient = influxdb2.NewClient(influxDBUrl, influxDBToken)
 	log.Println("Connected to InfluxDB")
@@ -60,6 +58,6 @@ func main() {
 	e.PUT("/", putHandler)
 
 	// Start server
-	log.Println("Starting server on :1323")
-	e.Start(":1323")
+	log.Println("Starting server on :" + $listenPort)
+	e.Start(":" + $listenPort)
 }
