@@ -8,12 +8,17 @@ import (
 )
 
 // Connection parameters
-const (
-	influxDBUrl = "http://localhost:8086"
-	influxDBToken = "your-token"
-	influxDBOrg = "your-org"
-	influxDBBucket = "your-bucket"
-)
+
+func connectToInfluxDB() {
+	const (
+		influxDBUrl := os.Getenv("INFLUXDB_URL")
+		influxDBToken := os.Getenv("INFLUXDB_TOKEN")
+		influxDBOrg := os.Getenv("INFLUXDB_ORG")
+		influxDBBucket := os.Getenv("INFLUXDB_BUCKET")
+		influxDBClient = influxdb2.NewClient(influxDBUrl, influxDBToken)
+	)
+	log.Println("Connected to InfluxDB")
+}
 
 // InfluxDB client
 var influxDBClient influxdb2.Client
