@@ -55,6 +55,6 @@ func Start() {
 	router.PUT("/api", putHandler)
 
 	// Start server
-	log.Println("Starting server on :" + $listenPort)
+	log.Println("Starting API server on :" + $listenPort)
 	router.Start(":" + $listenPort)
 }
