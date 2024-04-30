@@ -2,20 +2,22 @@ package app
 
 import (
 	"log"
+	"net/http"
 	"os"
+
 	ginrouter "github.com/gin-gonic/gin"
-	"github.com/labstack/echo/v4"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	"github.com/labstack/echo/v4"
 )
 
 // InfluxDB connection parameters
 
 var (
-	influxDBUrl = os.Getenv("INFLUXDB_URL") + ":" + os.Getenv("INFLUXDB_PORT")
-	influxDBToken = os.Getenv("INFLUXDB_TOKEN")
-	influxDBOrg = os.Getenv("INFLUXDB_ORG")
+	influxDBUrl    = os.Getenv("INFLUXDB_URL") + ":" + os.Getenv("INFLUXDB_PORT")
+	influxDBToken  = os.Getenv("INFLUXDB_TOKEN")
+	influxDBOrg    = os.Getenv("INFLUXDB_ORG")
 	influxDBBucket = os.Getenv("INFLUXDB_BUCKET")
-	listenPort = os.Getenv("LISTENONPORT")
+	listenPort     = os.Getenv("LISTENONPORT")
 )
 
 // InfluxDB client
@@ -35,7 +37,7 @@ func addToInfluxDB() {
 	// Create point
 	p := influxdb2.NewPoint("stat",
 		map[string]string{"unit": "temperature"},
-		map[string]interface{}{"avg":24.5, "max":45},
+		map[string]interface{}{"avg": 24.5, "max": 45},
 	)
 	// Write point immediately
 	writeAPI.WritePoint(p)
@@ -63,6 +65,6 @@ func Start() {
 	router.GET("/api", getHandler)
 
 	// Start server
-	log.Println("Starting API server on :" + $listenPort)
-	router.Start(":" + $listenPort)
+	log.Println("Starting API server on :" + listenPort)
+	router.Start(":" + listenPort)
 }
