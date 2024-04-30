@@ -13,7 +13,7 @@ WORKDIR "$APP_HOME"
 # Copy go mod and sum files
 COPY ./src/api/* ${APP_HOME}
 
-RUN go get github.com/ntatschner/Tatux.Telemetry/src/api/app
+RUN go install github.com/ntatschner/Tatux.Telemetry/src/api@latest
 
 # Copy the source code
 COPY ./src/api .
