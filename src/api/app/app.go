@@ -5,20 +5,30 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	ginrouter "github.com/gin-gonic/gin"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
-	"github.com/labstack/echo/v4"
 )
 
 // InfluxDB connection parameters
 
 var (
-	influxDBUrl    = os.Getenv("INFLUXDB_URL") + ":" + os.Getenv("INFLUXDB_PORT")
-	influxDBToken  = os.Getenv("INFLUXDB_TOKEN")
-	influxDBOrg    = os.Getenv("INFLUXDB_ORG")
-	influxDBBucket = os.Getenv("INFLUXDB_BUCKET")
-	listenPort     = os.Getenv("LISTENONPORT")
+	influxDBUrl    = getEnv("INFLUXDB_URL", "", false) + ":" + getEnv("INFLUXDB_PORT", "", false)
+	influxDBToken  = getEnv("INFLUXDB_TOKEN", "", false)
+	influxDBOrg    = getEnv("INFLUXDB_ORG", "", false)
+	influxDBBucket = getEnv("INFLUXDB_BUCKET", "", false)
+	listenPort     = getEnv("LISTENONPORT", "9000", false)
 )
+
+func getEnv(key, defaultValue string, throwOnDefault bool) string {
+	value, exists := os.LookupEnv(key)
+	if !exists && !throwOnDefault {
+		return defaultValue
+	} else if !exists && throwOnDefault {
+		log.Fatalf("Environment variable %s is not set", key)
+	}
+	return value
+}
 
 // InfluxDB client
 var influxDBClient influxdb2.Client
@@ -31,29 +41,23 @@ func connectToInfluxDB() {
 }
 
 // Add data to InfluxDB
-func addToInfluxDB() {
-	// Get non-blocking write client
-	writeAPI := influxDBClient.WriteAPIBlocking(influxDBOrg, influxDBBucket)
-	// Create point
-	p := influxdb2.NewPoint("stat",
-		map[string]string{"unit": "temperature"},
-		map[string]interface{}{"avg": 24.5, "max": 45},
-	)
-	// Write point immediately
-	writeAPI.WritePoint(p)
-	log.Println("Data added to InfluxDB")
+
+// Handlers for GET methods
+
+func getPing(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "pong",
+	})
 }
 
-// Handler for GET method
-
-func getHandler(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
+func getHandler(c *gin.Context) error {
+	return nil
 }
 
 // Handler for PUT method
-func putHandler(c echo.Context) error {
-	addToInfluxDB()
-	return c.String(http.StatusOK, "Data added to InfluxDB")
+
+func putHandler(c *gin.Context) error {
+	return nil
 }
 
 func Start() {
@@ -61,10 +65,9 @@ func Start() {
 	router := ginrouter.Default()
 
 	// Routes
-	router.PUT("/api", putHandler)
-	router.GET("/api", getHandler)
+	router.GET("/ping", getPing)
 
 	// Start server
 	log.Println("Starting API server on :" + listenPort)
-	router.Start(":" + listenPort)
+	router.Run(":" + listenPort)
 }
