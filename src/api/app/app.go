@@ -1,6 +1,8 @@
 package app
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -48,6 +50,36 @@ func getPing(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "pong",
 	})
+}
+
+type Telemetry struct {
+	// Define your fields here, for example:
+	Source        string `json:"source"`
+	Command       string `json:"command"`
+	Result        string `json:"result"`
+	LocalDateTime string `json:"localDateTime"`
+	Exception     string `json:"exception"`
+}
+
+func getTelemetry(c *gin.Context) {
+	// Get the JSON from the request
+	body, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error reading request body",
+		})
+		return
+	}
+
+	// Unmarshal the JSON into the struct
+	var telemetry Telemetry
+	err = json.Unmarshal(body, &telemetry)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid JSON",
+		})
+		return
+	}
 }
 
 func getHandler(c *gin.Context) error {
