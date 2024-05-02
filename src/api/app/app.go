@@ -10,15 +10,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	ginrouter "github.com/gin-gonic/gin"
-	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
 
 var (
-	influxDBUrl    = getEnv("INFLUXDB_URL", "", false) + ":" + getEnv("INFLUXDB_PORT", "", false)
-	influxDBToken  = getEnv("INFLUXDB_TOKEN", "", false)
-	influxDBOrg    = getEnv("INFLUXDB_ORG", "", false)
-	influxDBBucket = getEnv("INFLUXDB_BUCKET", "", false)
-	listenPort     = getEnv("LISTENONPORT", "9000", false)
+	influxDBUrl   = getEnv("INFLUXDB_URL", "", false) + ":" + getEnv("INFLUXDB_PORT", "", false)
+	influxDBToken = getEnv("INFLUXDB_TOKEN", "", false)
+	listenPort    = getEnv("LISTENONPORT", "9000", false)
 )
 
 func getEnv(key, defaultValue string, throwOnDefault bool) string {
@@ -73,11 +70,6 @@ func putTelemetry(c *gin.Context) {
 
 // Database Functions
 
-func connectToInfluxDB(url string, token string) (*influxdb2.Client, error) {
-	c := influxdb2.NewClient(url, token)
-	return c
-}
-
 func Start() {
 	// Starting the router
 	router := ginrouter.Default()
@@ -89,4 +81,7 @@ func Start() {
 	// Start server
 	log.Println("Starting API server on :" + listenPort)
 	router.Run(":" + listenPort)
+
+	// Connect to InfluxDB
+	client := main.GetInfluxDBClient()
 }
