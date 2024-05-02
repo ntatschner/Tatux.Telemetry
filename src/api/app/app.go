@@ -83,5 +83,5 @@ func Start() {
 	router.Run(":" + listenPort)
 
 	// Connect to InfluxDB
-	client := main.connectInfluxDB()
+	client := handlers.connectInfluxDB()
 }
