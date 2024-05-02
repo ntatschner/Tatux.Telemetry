@@ -2,17 +2,16 @@ package app
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	ginrouter "github.com/gin-gonic/gin"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
-
-// InfluxDB connection parameters
 
 var (
 	influxDBUrl    = getEnv("INFLUXDB_URL", "", false) + ":" + getEnv("INFLUXDB_PORT", "", false)
@@ -32,18 +31,6 @@ func getEnv(key, defaultValue string, throwOnDefault bool) string {
 	return value
 }
 
-// InfluxDB client
-var influxDBClient influxdb2.Client
-
-// Connection parameters
-
-func connectToInfluxDB() {
-	influxDBClient = influxdb2.NewClient(influxDBUrl, influxDBToken)
-	log.Println("Connected to InfluxDB")
-}
-
-// Add data to InfluxDB
-
 // Handlers for GET methods
 
 func getPing(c *gin.Context) {
@@ -52,18 +39,19 @@ func getPing(c *gin.Context) {
 	})
 }
 
+// Handler for PUT method
+
 type Telemetry struct {
-	// Define your fields here, for example:
-	Source        string `json:"source"`
-	Command       string `json:"command"`
-	Result        string `json:"result"`
-	LocalDateTime string `json:"localDateTime"`
-	Exception     string `json:"exception"`
+	Source        string    `json:"source"`
+	Command       string    `json:"command"`
+	Complete      bool      `json:"complete"`
+	LocalDateTime time.Time `json:"localDateTime"`
+	Exception     string    `json:"exception"`
 }
 
-func getTelemetry(c *gin.Context) {
+func putTelemetry(c *gin.Context) {
 	// Get the JSON from the request
-	body, err := ioutil.ReadAll(c.Request.Body)
+	body, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Error reading request body",
@@ -77,19 +65,17 @@ func getTelemetry(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid JSON",
+			"cause": err.Error(),
 		})
 		return
 	}
 }
 
-func getHandler(c *gin.Context) error {
-	return nil
-}
+// Database Functions
 
-// Handler for PUT method
-
-func putHandler(c *gin.Context) error {
-	return nil
+func connectToInfluxDB(url string, token string) (*influxdb2.Client, error) {
+	c := influxdb2.NewClient(url, token)
+	return c
 }
 
 func Start() {
@@ -98,6 +84,7 @@ func Start() {
 
 	// Routes
 	router.GET("/ping", getPing)
+	router.PUT("/api/telemetry", putTelemetry)
 
 	// Start server
 	log.Println("Starting API server on :" + listenPort)
