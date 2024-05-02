@@ -27,7 +27,7 @@ func getEnv(key, defaultValue string, throwOnDefault bool) string {
 
 var client = influxdb2.NewClient(influxDBUrl, influxDBToken)
 
-func ensureConnection(url string, token string) {
+func connectInfluxDB(url string, token string) {
 	for {
 		// Ping the InfluxDB server
 		_, err := client.Health(context.Background())
@@ -49,7 +49,7 @@ func main() {
 
 	client = influxdb2.NewClient(influxDBUrl, influxDBToken)
 
-	go ensureConnection(influxDBUrl, influxDBToken)
+	go connectInfluxDB(influxDBUrl, influxDBToken)
 
 	app.Start()
 }
