@@ -10,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	ginrouter "github.com/gin-gonic/gin"
+	"github.com/ntatschner/Tatux.Telemetry/src/api/handlers"
 )
 
 var (
@@ -83,5 +84,5 @@ func Start() {
 	router.Run(":" + listenPort)
 
 	// Connect to InfluxDB
-	client := handlers.connectInfluxDB()
+	handlers.ConnectInfluxDB(influxDBUrl, influxDBToken)
 }

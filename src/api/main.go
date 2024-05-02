@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/ntatschner/Tatux.Telemetry/src/api/app"
+	"github.com/ntatschner/Tatux.Telemetry/src/api/handlers"
 )
 
 var (
@@ -25,7 +26,7 @@ func getEnv(key, defaultValue string, throwOnDefault bool) string {
 func main() {
 	log.Println("Starting server")
 
-	go handlers.connectInfluxDB(influxDBUrl, influxDBToken)
+	go handlers.ConnectInfluxDB(influxDBUrl, influxDBToken)
 
 	app.Start()
 }
