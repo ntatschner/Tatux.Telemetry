@@ -60,6 +60,9 @@ func PutTelemetry(c *gin.Context) {
 			"cause": err.Error(),
 		})
 		return
+	} else {
+		// Write the telemetry to InfluxDB
+		WriteTelemetry(telemetry)
 	}
 }
 

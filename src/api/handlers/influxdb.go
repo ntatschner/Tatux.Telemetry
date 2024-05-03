@@ -35,10 +35,24 @@ func ConnectInfluxDB(url string, token string) {
 				log.Println("Reconnected to InfluxDB")
 			}
 		} else {
-			log.Println("InfluxDB is healthy")
+			//log.Println("InfluxDB is healthy")
 		}
 
 		// Wait for a while before pinging again
 		time.Sleep(30 * time.Second)
 	}
+}
+
+func WriteTelemetry(telemetry Telemetry) {
+	// Create a new point
+	point := influxdb2.NewPointWithMeasurement(telemetry.Source).
+		AddTag("command", telemetry.Command).
+		AddField("complete", telemetry.Complete).
+		AddField("localDateTime", telemetry.LocalDateTime).
+		AddField("exception", telemetry.Exception).
+		SetTime(time.Now())
+
+	// Write the point
+	writeAPI := client.WriteAPIBlocking(INFLUXDB_ORG, INFLUXDB_BUCKET)
+	writeAPI.WritePoint(context.Background(), point)
 }
