@@ -10,12 +10,6 @@ RUN mkdir -p "$APP_HOME"
 
 WORKDIR "$APP_HOME"
 
-# If a .env file is present, load it
-COPY ./.env .env
-
-# load the env file
-RUN if [ -f .env ]; then export $(cat .env | xargs); fi
-
 # Copy go mod and sum files
 COPY ./src/api/* ${APP_HOME}
 
