@@ -1,4 +1,4 @@
-FROM golang:bullseye
+FROM golang:latest as builder
 
 LABEL Author="Nigel Tatschner (ntatschner@gmail.com)"
 
@@ -10,18 +10,24 @@ RUN mkdir -p "$APP_HOME"
 
 WORKDIR "$APP_HOME"
 
-# Copy go mod and sum files
 COPY ./src/api/* ${APP_HOME}
 
-RUN go install github.com/ntatschner/Tatux.Telemetry/src/api@latest
+RUN go get github.com/ntatschner/Tatux.Telemetry/src/api/handlers \
+    && go get github.com/ntatschner/Tatux.Telemetry/src/api/app \
+    && go get github.com/ntatschner/Tatux.Telemetry/src/api/system
 
-# Copy the source code
-COPY ./src/api .
+RUN go mod download
 
-RUN go build -o main main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
-# Expose port for the application
+FROM alpine:latest  
+
+RUN apk --no-cache add ca-certificates
+
+WORKDIR "$APP_HOME"
+
+COPY --from=builder "$APP_HOME"\main .
+
 EXPOSE $LISTENONPORT
 
-# Command to run the application
 CMD ["./main"]

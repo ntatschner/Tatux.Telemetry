@@ -1,0 +1,1 @@
+docker build --no-cache -t tatux.telemetry:v0.1 .

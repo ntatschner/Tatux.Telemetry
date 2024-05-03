@@ -1,0 +1,1 @@
+docker build -t tatux.telemetry:v0.1 .
