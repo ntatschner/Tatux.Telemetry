@@ -4,17 +4,14 @@ LABEL Author="Nigel Tatschner (ntatschner@gmail.com)"
 
 ENV LISTENONPORT=9000 INFLUXDB_URL='http://localhost' INFLUXDB_PORT=8086 INFLUXDB_ORG='DefaultOrg' INFLUXDB_TOKEN='' INFLUXDB_BUCKET=''
 
-ENV APP_HOME=/app
 
-RUN mkdir -p "$APP_HOME"
+RUN mkdir -p builder
 
-WORKDIR "$APP_HOME"
+WORKDIR /builder
 
-COPY ./src/api/* ${APP_HOME}
+COPY ./src/api/ /builder
 
-RUN go get github.com/ntatschner/Tatux.Telemetry/src/api/handlers \
-    && go get github.com/ntatschner/Tatux.Telemetry/src/api/app \
-    && go get github.com/ntatschner/Tatux.Telemetry/src/api/system
+#RUN go get github.com/ntatschner/Tatux.Telemetry/src/api
 
 RUN go mod download
 
@@ -24,9 +21,13 @@ FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates
 
+ENV APP_HOME=/app
+
+RUN mkdir -p "$APP_HOME"
+
 WORKDIR "$APP_HOME"
 
-COPY --from=builder "$APP_HOME"\main .
+COPY --from=builder /builder/main .
 
 EXPOSE $LISTENONPORT
 
