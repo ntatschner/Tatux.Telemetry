@@ -2,31 +2,21 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/ntatschner/Tatux.Telemetry/src/api/app"
 	"github.com/ntatschner/Tatux.Telemetry/src/api/handlers"
+	"github.com/ntatschner/Tatux.Telemetry/src/api/system"
 )
 
 var (
-	influxDBUrl   = getEnv("INFLUXDB_URL", "", false) + ":" + getEnv("INFLUXDB_PORT", "", false)
-	influxDBToken = getEnv("INFLUXDB_TOKEN", "", false)
+	InfluxDBUrl   = system.GetEnv("INFLUXDB_URL", "", false) + ":" + system.GetEnv("INFLUXDB_PORT", "", false)
+	InfluxDBToken = system.GetEnv("INFLUXDB_TOKEN", "", false)
 )
-
-func getEnv(key, defaultValue string, throwOnDefault bool) string {
-	value, exists := os.LookupEnv(key)
-	if !exists && !throwOnDefault {
-		return defaultValue
-	} else if !exists && throwOnDefault {
-		log.Fatalf("Environment variable %s is not set", key)
-	}
-	return value
-}
 
 func main() {
 	log.Println("Starting server")
 
-	go handlers.ConnectInfluxDB(influxDBUrl, influxDBToken)
+	go handlers.ConnectInfluxDB(InfluxDBUrl, InfluxDBToken)
 
 	app.Start()
 }

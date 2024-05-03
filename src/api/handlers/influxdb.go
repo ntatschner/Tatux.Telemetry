@@ -3,28 +3,20 @@ package handlers
 import (
 	"context"
 	"log"
-	"os"
 	"time"
 
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	"github.com/ntatschner/Tatux.Telemetry/src/api/system"
 )
 
 var (
-	influxDBUrl   = getEnv("INFLUXDB_URL", "", false) + ":" + getEnv("INFLUXDB_PORT", "", false)
-	influxDBToken = getEnv("INFLUXDB_TOKEN", "", false)
+	InfluxDBUrl     = system.GetEnv("INFLUXDB_URL", "", false) + ":" + system.GetEnv("INFLUXDB_PORT", "", false)
+	InfluxDBToken   = system.GetEnv("INFLUXDB_TOKEN", "", false)
+	INFLUXDB_BUCKET = system.GetEnv("INFLUXDB_BUCKET", "", false)
+	INFLUXDB_ORG    = system.GetEnv("INFLUXDB_ORG", "", false)
 )
 
-func getEnv(key, defaultValue string, throwOnDefault bool) string {
-	value, exists := os.LookupEnv(key)
-	if !exists && !throwOnDefault {
-		return defaultValue
-	} else if !exists && throwOnDefault {
-		log.Fatalf("Environment variable %s is not set", key)
-	}
-	return value
-}
-
-var client = influxdb2.NewClient(influxDBUrl, influxDBToken)
+var client = influxdb2.NewClient(InfluxDBUrl, InfluxDBToken)
 
 func ConnectInfluxDB(url string, token string) {
 	for {
@@ -36,6 +28,14 @@ func ConnectInfluxDB(url string, token string) {
 			// Attempt to reconnect
 			log.Println("Attempting to reconnect to InfluxDB...")
 			client = influxdb2.NewClient(url, token)
+			_, err = client.Health(context.Background())
+			if err != nil {
+				log.Println("Failed to reconnect to InfluxDB:", err)
+			} else {
+				log.Println("Reconnected to InfluxDB")
+			}
+		} else {
+			log.Println("InfluxDB is healthy")
 		}
 
 		// Wait for a while before pinging again
