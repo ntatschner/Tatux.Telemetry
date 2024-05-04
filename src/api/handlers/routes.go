@@ -33,12 +33,41 @@ func GetSystemHealth(c *gin.Context) {
 	})
 }
 
-type Telemetry struct {
+type TelemetryBasic struct {
 	Source        string    `json:"source"`
 	Command       string    `json:"command"`
 	Complete      bool      `json:"complete"`
 	LocalDateTime time.Time `json:"localDateTime"`
+ ExecutionTime time.Duration `json:"executionTime"`
 	Exception     string    `json:"exception"`
+}
+
+type TelemetryFull struct {
+  Source        string    `json:"source"`
+  Command       string    `json:"command"`
+  Complete      bool      `json:"complete"`
+  LocalDateTime time.Time `json:"localDateTime"`
+  ExecutionTime time.Duration `json:"executionTime"`
+  Exception     string    `json:"exception"`
+  Manufacturer string `json:"Manufacturer"`
+  Model string `json:"Model"`
+  TotalPhysicalMemory string `json:"TotalPhysicalMemory"`
+  NumberOfProcessors string `json:"NumberOfProcessors"`
+  NumberOfLogicalProcessors string `json:"NumberOfLogicalProcessors"`
+  OSArchitecture string `json:"OSArchitecture"`
+  OSVersion string `json:"Version"`
+  OSBuildNumber string `json:"BuildNumber"`
+  ServicePackMajorVersion string `json:"ServicePackMajorVersion"`
+  ServicePackMinorVersion string `json:"ServicePackMinorVersion"`
+  PowerShellVersion string `json:"PowerShellVersion"`
+  HostVersion string `json:"HostVersion"`
+  HostName string `json:"HostName"`
+  HostUI string `json:"HostUI"`
+  HostCulture string `json:"HostCulture"`
+  HostUICulture string `json:"HostUICulture"`
+  ModuleName string `json:"ModuleName"`
+  ModuleVersion string `json:"ModuleVersion"`
+  ModulePath string `json:"ModulePath"`
 }
 
 func PutTelemetry(c *gin.Context) {
