@@ -47,6 +47,14 @@ function Invoke-TelemetryCollection {
         ModuleVersion = $ExecutionContext.ModuleVersion
         ModulePath = $ExecutionContext.ModulePath
     }
+# Create a new hashtable
+$AllData = @{}
+
+# Add each hashtable to the new hashtable
+$AllData += $HardwareData
+$AllData += $OSData
+$AllData += $PSData
+$AllData += $ModuleData
 
     # Generate the telemetry data
 
