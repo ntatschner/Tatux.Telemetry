@@ -100,3 +100,58 @@ func GetPing(c *gin.Context) {
 		"message": "pong",
 	})
 }
+
+type GenericTelemetry struct {
+    Type string          `json:"type"`
+    Data json.RawMessage `json:"data"`
+}
+
+func PutTelemetry(c *gin.Context) {
+// Unmarshal the JSON into the generic struct
+var generic GenericTelemetry
+err = json.Unmarshal(body, &generic)
+if err != nil {
+    c.JSON(http.StatusBadRequest, gin.H{
+        "error": "Invalid JSON",
+        "cause": err.Error(),
+    })
+    return
+}
+
+// Determine which struct to unmarshal the data into based on the Type field
+switch generic.Type {
+case "TelemetryBasic":
+    var telemetryBasic TelemetryBasic
+    err = json.Unmarshal(generic.Data, &telemetryBasic)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": "Invalid TelemetryBasic JSON",
+            "cause": err.Error(),
+        })
+        return
+    }
+
+    // Write the basic telemetry to InfluxDB
+    WriteTelemetry(telemetryBasic)
+
+case "TelemetryFull":
+    var telemetryFull TelemetryFull
+    err = json.Unmarshal(generic.Data, &telemetryFull)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": "Invalid TelemetryFull JSON",
+            "cause": err.Error(),
+        })
+        return
+    }
+
+    // Write the full telemetry to InfluxDB
+    WriteTelemetry(telemetryFull)
+
+default:
+    c.JSON(http.StatusBadRequest, gin.H{
+        "error": "Unknown telemetry type",
+    })
+    return
+}
+}
