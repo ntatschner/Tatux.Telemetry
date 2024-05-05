@@ -74,7 +74,7 @@ function Invoke-TelemetryCollection {
     $AllData += $ModuleData
     $AllData += @{ID = $AllData.HardwareSerialNumber + "_" + $AllData.SerialNumber} 
     $AllData += @{LocalDateTime = $CurrentTime}
-    $AllData += @{ExecutionDuration = $($(New-TimeSpan -Start $script:GlobalExecutionDuration -End $(Get-Date)).TotalMilliseconds * 1e6)}
+    $AllData += @{ExecutionDuration = [Int64]$($(New-TimeSpan -Start $script:GlobalExecutionDuration -End $(Get-Date)).TotalMilliseconds * 1e6)}
     $AllData += @{Stage = $Stage}
     $AllData += @{Failed = $Failed}
     # Generate the telemetry data
