@@ -84,9 +84,12 @@ function Invoke-TelemetryCollection {
             if ($_.Name -notin @('ID', 'CommandName', 'ModuleName', 'ModuleVersion', 'LocalDateTime', 'ExecutionDuration', 'Stage', 'Failed')) {
                 $_.Value = 'Minimal'
             }
-            $AllData | ConvertTo-Json
+            $body = $AllData | ConvertTo-Json
+            Invoke-WebRequest -Uri 'http://localhost:9000/api/telemetry' -Method Put -Body $body -ContentType 'application/json'
         }
     } else {
-        $AllData | ConvertTo-Json
+        $body = $AllData | ConvertTo-Json
+        Invoke-WebRequest -Uri 'http://localhost:9000/api/telemetry' -Method Put -Body $body -ContentType 'application/json'
     }
+
 }

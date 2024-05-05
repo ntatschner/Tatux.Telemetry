@@ -48,10 +48,30 @@ func WriteTelemetry(telemetry Telemetry) {
 	point := influxdb2.NewPointWithMeasurement(telemetry.ID).
 		AddTag("commandName", telemetry.CommandName).
 		AddField("complete", telemetry.Complete).
-		AddField("Failed", telemetry.Failed).
 		AddField("localDateTime", telemetry.LocalDateTime).
+		AddField("executionDuration", int64(telemetry.ExecutionDuration)).
+		AddField("failed", telemetry.Failed).
 		AddField("exception", telemetry.Exception).
-		SetTime(time.Now())
+		AddField("manufacturer", telemetry.Manufacturer).
+		AddField("model", telemetry.Model).
+		AddField("totalPhysicalMemory", telemetry.TotalPhysicalMemory).
+		AddField("numberOfProcessors", telemetry.NumberOfProcessors).
+		AddField("numberOfLogicalProcessors", telemetry.NumberOfLogicalProcessors).
+		AddField("partOfDomain", telemetry.PartOfDomain).
+		AddField("hardwareSerialNumber", telemetry.HardwareSerialNumber).
+		AddField("osArchitecture", telemetry.OSArchitecture).
+		AddField("osVersion", telemetry.OSVersion).
+		AddField("osBuildNumber", telemetry.OSBuildNumber).
+		AddField("powerShellVersion", telemetry.PowerShellVersion).
+		AddField("hostVersion", telemetry.HostVersion).
+		AddField("hostName", telemetry.HostName).
+		AddField("hostUI", telemetry.HostUI).
+		AddField("hostCulture", telemetry.HostCulture).
+		AddField("hostUICulture", telemetry.HostUICulture).
+		AddTag("moduleName", telemetry.ModuleName).
+		AddField("moduleVersion", telemetry.ModuleVersion).
+		AddField("modulePath", telemetry.ModulePath).
+		SetTime(telemetry.LocalDateTime)
 
 	// Write the point
 	writeAPI := client.WriteAPIBlocking(INFLUXDB_ORG, INFLUXDB_BUCKET)

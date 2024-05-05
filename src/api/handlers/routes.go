@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 	"time"
 
@@ -43,10 +44,10 @@ type Telemetry struct {
 	Exception                 string        `json:"exception"`
 	Manufacturer              string        `json:"Manufacturer"`
 	Model                     string        `json:"Model"`
-	TotalPhysicalMemory       string        `json:"TotalPhysicalMemory"`
-	NumberOfProcessors        string        `json:"NumberOfProcessors"`
-	NumberOfLogicalProcessors string        `json:"NumberOfLogicalProcessors"`
-	PartOfDomain              string        `json:"PartOfDomain"`
+	TotalPhysicalMemory       int           `json:"TotalPhysicalMemory"`
+	NumberOfProcessors        int           `json:"NumberOfProcessors"`
+	NumberOfLogicalProcessors int           `json:"NumberOfLogicalProcessors"`
+	PartOfDomain              bool          `json:"PartOfDomain"`
 	HardwareSerialNumber      string        `json:"HardwareSerialNumber"`
 	OSArchitecture            string        `json:"OSArchitecture"`
 	OSVersion                 string        `json:"Version"`
@@ -68,11 +69,6 @@ func GetPing(c *gin.Context) {
 	})
 }
 
-type GenericTelemetry struct {
-	Type string          `json:"type"`
-	Data json.RawMessage `json:"data"`
-}
-
 func PutTelemetry(c *gin.Context) {
 	// Get the JSON from the request
 	body, err := io.ReadAll(c.Request.Body)
@@ -91,6 +87,7 @@ func PutTelemetry(c *gin.Context) {
 			"error": "Invalid JSON",
 			"cause": err.Error(),
 		})
+		log.Printf("Error: %v", err.Error())
 		return
 	} else {
 		// Write the telemetry to InfluxDB
