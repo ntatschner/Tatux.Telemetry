@@ -11,12 +11,14 @@ function Invoke-TelemetryCollection {
 
         [bool]$Failed = $false,
 
-        [switch]$Minimal
+        [switch]$Minimal,
+
+        [switch]$ClearTimer
     )
-    if (Get-Variable -Name 'GlobalExecutionDuration' -Scope Script -ErrorAction SilentlyContinue) {
-        $Script:GlobalExecutionDuration = $GlobalExecutionDuration
+    if ((Get-Variable -Name 'GlobalExecutionDuration' -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
+        $script:GlobalExecutionDuration = $GlobalExecutionDuration
     } else {
-        $Script:GlobalExecutionDuration = Get-Date
+        $script:GlobalExecutionDuration = Get-Date
     }
     $CurrentTime = (Get-Date).ToString("yyyy-MM-ddTHH:mm:sszzz")
 
@@ -72,7 +74,7 @@ function Invoke-TelemetryCollection {
     $AllData += $ModuleData
     $AllData += @{ID = $AllData.HardwareSerialNumber + "_" + $AllData.SerialNumber} 
     $AllData += @{LocalDateTime = $CurrentTime}
-    $AllData += @{ExecutionDuration = $($(New-TimeSpan -Start $Script:Duration -End $(Get-Date)).TotalMilliseconds * 1e6)}
+    $AllData += @{ExecutionDuration = $($(New-TimeSpan -Start $script:GlobalExecutionDuration -End $(Get-Date)).TotalMilliseconds * 1e6)}
     $AllData += @{Stage = $Stage}
     $AllData += @{Failed = $Failed}
     # Generate the telemetry data
