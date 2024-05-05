@@ -11,3 +11,9 @@ on:
       - 'src/modules/**'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  SetUp:
+
