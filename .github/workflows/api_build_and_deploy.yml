@@ -1,1 +1,13 @@
 name: Build API in Docker Container and Deploy Container to Registry 
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/modules/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'src/modules/**'
+  workflow_dispatch:
+
