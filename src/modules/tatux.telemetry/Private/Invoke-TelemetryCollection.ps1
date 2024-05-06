@@ -6,16 +6,19 @@ function Invoke-TelemetryCollection {
         [array]$ExecutionContextInput,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet('Start', 'In-Progrss', 'End')]
+        [ValidateSet('Start', 'In-Progress', 'End', 'Module-Load', '')]
         [string]$Stage,
 
         [bool]$Failed = $false,
+
+        [string]$Exception,
 
         [switch]$Minimal,
 
         [switch]$ClearTimer,
 
-        [string]$URI = 'http://localhost:9000/api/telemetry'
+        [Parameter(Mandatory = $true)]
+        [string]$URI
     )
     if ((Get-Variable -Name 'GlobalExecutionDuration' -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
         $script:GlobalExecutionDuration = $GlobalExecutionDuration
@@ -83,6 +86,7 @@ function Invoke-TelemetryCollection {
     $AllData += @{ExecutionDuration = [Int64]$($(New-TimeSpan -Start $script:GlobalExecutionDuration -End $(Get-Date)).TotalMilliseconds * 1e6) }
     $AllData += @{Stage = $Stage }
     $AllData += @{Failed = $Failed }
+    $AllData += @{Exception = $Exception.ToString() }
     # Generate the telemetry data
     if ($Minimal) {
         $AllData | ForEach-Object {

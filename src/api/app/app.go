@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	InfluxDBUrl   = system.GetEnv("INFLUXDB_URL", "", false) + ":" + system.GetEnv("INFLUXDB_PORT", "", false)
-	InfluxDBToken = system.GetEnv("INFLUXDB_TOKEN", "", false)
+	InfluxDBUrl   = system.GetEnv("INFLUXDB_URL", "", true) + ":" + system.GetEnv("INFLUXDB_PORT", "8086", false)
+	InfluxDBToken = system.GetEnv("INFLUXDB_TOKEN", "", true)
 	listenPort    = system.GetEnv("LISTENONPORT", "9000", false)
 )
 

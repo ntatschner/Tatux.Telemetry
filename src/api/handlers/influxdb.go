@@ -10,10 +10,10 @@ import (
 )
 
 var (
-	InfluxDBUrl     = system.GetEnv("INFLUXDB_URL", "", false) + ":" + system.GetEnv("INFLUXDB_PORT", "", false)
-	InfluxDBToken   = system.GetEnv("INFLUXDB_TOKEN", "", false)
-	INFLUXDB_BUCKET = system.GetEnv("INFLUXDB_BUCKET", "", false)
-	INFLUXDB_ORG    = system.GetEnv("INFLUXDB_ORG", "", false)
+	InfluxDBUrl     = system.GetEnv("INFLUXDB_URL", "", true) + ":" + system.GetEnv("INFLUXDB_PORT", "8086", false)
+	InfluxDBToken   = system.GetEnv("INFLUXDB_TOKEN", "", true)
+	INFLUXDB_BUCKET = system.GetEnv("INFLUXDB_BUCKET", "", true)
+	INFLUXDB_ORG    = system.GetEnv("INFLUXDB_ORG", "", true)
 )
 
 var client = influxdb2.NewClient(InfluxDBUrl, InfluxDBToken)
