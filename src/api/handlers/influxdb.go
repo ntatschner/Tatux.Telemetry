@@ -59,6 +59,7 @@ func WriteTelemetry(telemetry Telemetry) {
 		AddField("numberOfLogicalProcessors", telemetry.NumberOfLogicalProcessors).
 		AddField("partOfDomain", telemetry.PartOfDomain).
 		AddField("hardwareSerialNumber", telemetry.HardwareSerialNumber).
+		AddField("bootDriveSerial", telemetry.BootDriveSerial).
 		AddField("osArchitecture", telemetry.OSArchitecture).
 		AddField("osVersion", telemetry.OSVersion).
 		AddField("osBuildNumber", telemetry.OSBuildNumber).
