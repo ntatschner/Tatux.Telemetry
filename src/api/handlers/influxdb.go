@@ -45,7 +45,8 @@ func ConnectInfluxDB(url string, token string) {
 
 func WriteTelemetry(telemetry Telemetry) {
 	// Create a new point
-	point := influxdb2.NewPointWithMeasurement(telemetry.ID).
+	point := influxdb2.NewPointWithMeasurement(telemetry.ModuleName).
+		AddField("id", telemetry.ID).
 		AddTag("commandName", telemetry.CommandName).
 		AddField("complete", telemetry.Complete).
 		AddField("localDateTime", telemetry.LocalDateTime).

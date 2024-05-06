@@ -84,7 +84,6 @@ function Invoke-TelemetryCollection {
     $AllData += @{Stage = $Stage }
     $AllData += @{Failed = $Failed }
     # Generate the telemetry data
-    Write-Output $AllData
     if ($Minimal) {
         $AllData | ForEach-Object {
             if ($_.Name -notin @('ID', 'CommandName', 'ModuleName', 'ModuleVersion', 'LocalDateTime', 'ExecutionDuration', 'Stage', 'Failed')) {
