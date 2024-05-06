@@ -1,27 +1,45 @@
 # A Simple Telemetry Collection API - Written in Go(lang)
 
+[![Build API in Docker Container and Deploy Container to Registry](https://github.com/ntatschner/Tatux.Telemetry/actions/workflows/api_build_and_deploy.yml/badge.svg)](https://github.com/ntatschner/Tatux.Telemetry/actions/workflows/api_build_and_deploy.yml)
+
 ## Overview
-This is a way to collect anonoised metrics about processes - PowerShell functions from a module, CI/CD Piplines or other automation sources. 
-It's is currently in early stages of development, I built this to help be collect usaging information anout mu modules as a way to eusure they are functioning correctly and so I can offer imporovements. 
+This is a way to collect anonymized metrics about processes - PowerShell functions from a module, CI/CD Pipelines or other automation sources. 
+It's is currently in early stages of development, I built this to help be collect usage information about my modules as a way to ensure they are functioning correctly and so I can offer improvements.
 
-All the code to is shared freely, I will also link the modules i'm embedding this in to so you can maybe utalise this for yourself. 
+At the moment I'm implementing a influxdb v2 database backend - NOT INCLUDED
 
-Again, this is in the early stages and I would use any code with a pitch of salt. :)
+All the code to is shared freely, I will also link the modules I'm embedding this in to so you can maybe utilise this for yourself. 
 
 ## Running the Docker Image
+
+You can find the Docker image on Docker Hub [here](https://hub.docker.com/r/tatux/telemetry).
 
 To run the Docker image, use the following command:
 
 ```bash
-docker run -e LISTENONPORT=9000 -e INFLUXDB_URL=http://localhost -e INFLUXDB_PORT=8086 -e INFLUXDB_ORG=DefaultOrg -e INFLUXDB_TOKEN=my-token -e INFLUXDB_BUCKET=my-bucket -p 9000:9000 my-go-app:1.0
+docker run -e LISTENONPORT=9000 -e INFLUXDB_URL=http://localhost -e INFLUXDB_PORT=8086 -e INFLUXDB_ORG=DefaultOrg -e INFLUXDB_TOKEN=my-token -e INFLUXDB_BUCKET=my-bucket -p 9000:9000 tatux/telemetry:latest
 ```
 
 In this command, `LISTENONPORT`, `INFLUXDB_URL`, `INFLUXDB_PORT`, `INFLUXDB_ORG`, `INFLUXDB_TOKEN`, and `INFLUXDB_BUCKET` are environment variables that are being passed to the Docker container. Replace `http://localhost`, `8086`, `DefaultOrg`, `my-token`, and `my-bucket` with your actual values.
 
 The `-p 9000:9000` option maps port 9000 in the Docker container to port 9000 on your host machine, so you can access your application at `http://localhost:9000`.
 
-Replace `my-go-app:1.0` with the name and tag of your Docker image.
-
+Docker Compose Example:
+```yaml
+  telemetry:
+    image: tatux/telemetry:latest
+    container_name: telemetry
+    restart: always
+    ports:
+    - "9000:9000"
+    environment:
+      LISTENONPORT: 9000
+      INFLUXDB_UR: http://localhost
+      INFLUXDB_PORT: 8086
+      INFLUXDB_TOKEN: YOUR_TOKEN
+      INFLUXDB_BUCKET: YOUR_BUCKET
+      INFLUXDB_ORG: YOUR_ORG
+```
 ## Dockerfile Breakdown
 
 Here's a breakdown of what each part of the Dockerfile does:
@@ -55,3 +73,5 @@ Here's a breakdown of what each part of the Dockerfile does:
 - `EXPOSE $LISTENONPORT`: This line informs Docker that the container listens on the specified network port at runtime.
 
 - `CMD ["./main"]`: This line specifies the command to run when the container starts.
+
+Again, this is in the early stages and I would use any code with a pitch of salt. :)
