@@ -30,4 +30,5 @@ $Time = Get-Date -UFormat "%H:%M:%S"
 
 #region export Public functions ($Public.BaseName) for WIP modules
 Export-ModuleMember -Function $Public.Basename
+Export-ModuleMember -Function $PSScriptRoot\Private\Invoke-TelemetryCollection.ps1
 #endregion
