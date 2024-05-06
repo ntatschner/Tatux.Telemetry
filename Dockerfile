@@ -11,8 +11,6 @@ WORKDIR /builder
 
 COPY ./src/api/ /builder
 
-#RUN go get github.com/ntatschner/Tatux.Telemetry/src/api
-
 RUN go mod download
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
