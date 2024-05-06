@@ -30,8 +30,11 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
     
-      - name: Build Docker Image
-        run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/telemetry:latest -f Dockerfile .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/telemetry:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5.3.0
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/telemetry:v0.1,${{ secrets.DOCKER_HUB_USERNAME }}/telemetry:latest
 
