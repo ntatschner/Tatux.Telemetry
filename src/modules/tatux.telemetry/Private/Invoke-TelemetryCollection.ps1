@@ -2,8 +2,13 @@ function Invoke-TelemetryCollection {
     param (
         [CmdletBinding(HelpUri = 'https://pwsh.dev.tatux.co.uk/tatux.telemetry/docs/Invoke-TelemetryCollection.html')]
 
-        [Parameter(Mandatory = $false)]
-        [array]$ExecutionContextInput,
+        [string]$ModuleName = 'UnknownModule',
+
+        [string]$ModuleVersion = 'UnknownModuleVersion',
+
+        [string]$ModulePath = 'UnknownModulePath',
+
+        [string]$CommandName = 'UnknownCommand',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Start', 'In-Progress', 'End', 'Module-Load', '')]
@@ -68,10 +73,10 @@ function Invoke-TelemetryCollection {
     # Generate module specific but none identifying telemetry data for the output
 
     $ModuleData = @{
-        ModuleName    = if ([string]::IsNullOrEmpty($ExecutionContextInput.ModuleName)) { 'UnknownModule' } else { $ExecutionContextInput.ModuleName }
-        ModuleVersion = if ([string]::IsNullOrEmpty($ExecutionContextInput.ModuleVersion)) { 'UnknownModuleVersion' } else { $ExecutionContextInput.ModuleVersion }
-        ModulePath    = if ([string]::IsNullOrEmpty($ExecutionContextInput.ModulePath)) { 'UnknownModulePath' } else { $ExecutionContextInput.ModulePath }
-        CommandName   = if ([string]::IsNullOrEmpty($ExecutionContextInput.CommandName)) { 'UnknownCommand' } else { $ExecutionContextInput.CommandName }
+        ModuleName    = if ([string]::IsNullOrEmpty($ModuleName)) { 'UnknownModule' } else { $ModuleName }
+        ModuleVersion = if ([string]::IsNullOrEmpty($ModuleVersion)) { 'UnknownModuleVersion' } else { $ModuleVersion }
+        ModulePath    = if ([string]::IsNullOrEmpty($ModulePath)) { 'UnknownModulePath' } else { $ModulePath }
+        CommandName   = if ([string]::IsNullOrEmpty($CommandName)) { 'UnknownCommand' } else { $CommandName }
     }
     # Create a new hashtable
     $AllData = @{}
