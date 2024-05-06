@@ -11,7 +11,7 @@ function Invoke-TelemetryCollection {
         [string]$CommandName = 'UnknownCommand',
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet('Start', 'In-Progress', 'End', 'Module-Load', '')]
+        [ValidateSet('Start', 'In-Progress', 'End', 'Module-Load')]
         [string]$Stage,
 
         [bool]$Failed = $false,
