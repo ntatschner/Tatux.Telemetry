@@ -65,10 +65,10 @@ function Invoke-TelemetryCollection {
     # Generate module specific but none identifying telemetry data for the output
 
     $ModuleData = @{
-        ModuleName    = $ExecutionContextInput.ModuleName
-        ModuleVersion = $ExecutionContextInput.ModuleVersion
-        ModulePath    = $ExecutionContextInput.ModulePath
-        CommandName   = $ExecutionContextInput.CommandName
+        ModuleName    = if ([string]::IsNullOrEmpty($ExecutionContextInput.ModuleName)) { 'UnknownModule' } else { $ExecutionContextInput.ModuleName }
+        ModuleVersion = if ([string]::IsNullOrEmpty($ExecutionContextInput.ModuleVersion)) { 'UnknownModuleVersion' } else { $ExecutionContextInput.ModuleVersion }
+        ModulePath    = if ([string]::IsNullOrEmpty($ExecutionContextInput.ModulePath)) { 'UnknownModulePath' } else { $ExecutionContextInput.ModulePath }
+        CommandName   = if ([string]::IsNullOrEmpty($ExecutionContextInput.CommandName)) { 'UnknownCommand' } else { $ExecutionContextInput.CommandName }
     }
     # Create a new hashtable
     $AllData = @{}
