@@ -73,7 +73,7 @@ func WriteTelemetry(telemetry Telemetry) {
 		AddTag("moduleName", telemetry.ModuleName).
 		AddField("moduleVersion", telemetry.ModuleVersion).
 		AddField("modulePath", telemetry.ModulePath).
-		SetTime(telemetry.LocalDateTime)
+		SetTime(time.Now())
 
 	// Write the point
 	writeAPI := client.WriteAPIBlocking(INFLUXDB_ORG, INFLUXDB_BUCKET)
