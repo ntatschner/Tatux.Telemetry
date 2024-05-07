@@ -33,6 +33,13 @@ function Invoke-TelemetryCollection {
     }
     $CurrentTime = (Get-Date).ToString("yyyy-MM-ddTHH:mm:sszzz")
 
+    $WebRequestArgs = @{
+        Uri         = $URI
+        Method      = 'Put'
+        ContentType = 'application/json'
+        UseBasicParsing = $true
+    }
+
     # Generate hardware specific but none identifying telemetry data for the output
     $Hardware = Get-WmiObject -Class Win32_ComputerSystem
     $bootPartition = Get-WmiObject -Class Win32_DiskPartition | Where-Object -Property bootpartition -eq True
@@ -99,12 +106,12 @@ function Invoke-TelemetryCollection {
                 $_.Value = 'Minimal'
             }
             $body = $AllData | ConvertTo-Json
-            Invoke-WebRequest -Uri $URI -Method Put -Body $body -ContentType 'application/json'
+            Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
         }
     }
     else {
         $body = $AllData | ConvertTo-Json
-        Invoke-WebRequest -Uri $URI -Method Put -Body $body -ContentType 'application/json'
+        Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
     }
 
 }
