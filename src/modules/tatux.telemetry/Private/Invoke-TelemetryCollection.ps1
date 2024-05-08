@@ -113,12 +113,12 @@ function Invoke-TelemetryCollection {
                 $_.Value = 'Minimal'
             }
             $body = $AllData | ConvertTo-Json
-            Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
+            Invoke-WebRequest @WebRequestArgs -Body $body > $null
         }
     }
     else {
         $body = $AllData | ConvertTo-Json
-        Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
+        Invoke-WebRequest @WebRequestArgs -Body $body > $null
     }
 
 }
