@@ -61,6 +61,7 @@ func WriteTelemetry(telemetry Telemetry) {
 		AddField("partOfDomain", telemetry.PartOfDomain).
 		AddField("hardwareSerialNumber", telemetry.HardwareSerialNumber).
 		AddField("bootDriveSerial", telemetry.BootDriveSerial).
+		AddField("osType", telemetry.OSType).
 		AddField("osArchitecture", telemetry.OSArchitecture).
 		AddField("osVersion", telemetry.OSVersion).
 		AddField("osBuildNumber", telemetry.OSBuildNumber).
