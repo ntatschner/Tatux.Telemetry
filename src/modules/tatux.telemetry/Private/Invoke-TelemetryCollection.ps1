@@ -61,8 +61,8 @@ function Invoke-TelemetryCollection {
     $OSData = @{
         OSType         = $OS.Caption
         OSArchitecture = $OS.OSArchitecture
-        Version        = $OS.Version
-        BuildNumber    = $OS.BuildNumber
+        OSVersion        = $OS.Version
+        OSBuildNumber    = $OS.BuildNumber
         SerialNumber   = $OS.SerialNumber
     }
 
