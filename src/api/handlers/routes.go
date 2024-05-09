@@ -50,6 +50,7 @@ type Telemetry struct {
 	PartOfDomain              bool          `json:"partofdomain"`
 	HardwareSerialNumber      string        `json:"hardwareserialnumber"`
 	BootDriveSerial           string        `json:"bootdriveserial"`
+	OSType                    string        `json:"ostype"`
 	OSArchitecture            string        `json:"osarchitecture"`
 	OSVersion                 string        `json:"version"`
 	OSBuildNumber             string        `json:"buildnumber"`

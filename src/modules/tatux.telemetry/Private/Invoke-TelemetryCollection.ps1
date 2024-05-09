@@ -34,16 +34,23 @@ function Invoke-TelemetryCollection {
     $CurrentTime = (Get-Date).ToString("yyyy-MM-ddTHH:mm:sszzz")
 
     $WebRequestArgs = @{
-        Uri         = $URI
-        Method      = 'Put'
-        ContentType = 'application/json'
+        Uri             = $URI
+        Method          = 'Put'
+        ContentType     = 'application/json'
         UseBasicParsing = $true
     }
 
     # Generate hardware specific but none identifying telemetry data for the output
     $Hardware = Get-WmiObject -Class Win32_ComputerSystem
     $bootPartition = Get-WmiObject -Class Win32_DiskPartition | Where-Object -Property bootpartition -eq True
-    $bootDriveSerial = $(Get-WmiObject -Class Win32_DiskDrive | Where-Object -Property index -eq $bootPartition.diskIndex | Select-Object -ExpandProperty SerialNumber).Trim()
+    $bootDriveSerial = $(Get-WmiObject -Class Win32_DiskDrive | Where-Object -Property index -eq $bootPartition.diskIndex)
+    if ([string]::IsNullOrEmpty($bootDriveSerial.SerialNumber) -and ($bootDriveSerial.Model -like '*Virtual*')) {
+        $bootDriveSerial = "VirtualDrive-$($bootDriveSerial.size)"
+    }
+    else {
+        $bootDriveSerial = $bootDriveSerial.SerialNumber.Trim()
+    }
+
     $HardwareData = @{
         Manufacturer              = $Hardware.Manufacturer
         Model                     = $Hardware.Model
@@ -61,8 +68,8 @@ function Invoke-TelemetryCollection {
     $OSData = @{
         OSType         = $OS.Caption
         OSArchitecture = $OS.OSArchitecture
-        Version        = $OS.Version
-        BuildNumber    = $OS.BuildNumber
+        OSVersion      = $OS.Version
+        OSBuildNumber  = $OS.BuildNumber
         SerialNumber   = $OS.SerialNumber
     }
 
@@ -106,12 +113,12 @@ function Invoke-TelemetryCollection {
                 $_.Value = 'Minimal'
             }
             $body = $AllData | ConvertTo-Json
-            Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
+            Invoke-WebRequest @WebRequestArgs -Body $body > $null
         }
     }
     else {
         $body = $AllData | ConvertTo-Json
-        Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
+        Invoke-WebRequest @WebRequestArgs -Body $body > $null
     }
 
 }
