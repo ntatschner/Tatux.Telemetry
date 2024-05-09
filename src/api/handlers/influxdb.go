@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"log"
+	"strings"
 	"time"
 
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
@@ -45,7 +46,7 @@ func ConnectInfluxDB(url string, token string) {
 
 func WriteTelemetry(telemetry Telemetry) {
 	// Create a new point
-	point := influxdb2.NewPointWithMeasurement(telemetry.ModuleName).
+	point := influxdb2.NewPointWithMeasurement(strings.ToLower(telemetry.ModuleName)).
 		AddField("id", telemetry.ID).
 		AddTag("commandName", telemetry.CommandName).
 		AddField("complete", telemetry.Complete).

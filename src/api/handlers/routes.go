@@ -38,30 +38,30 @@ type Telemetry struct {
 	ID                        string        `json:"id"`
 	CommandName               string        `json:"commandname"`
 	Complete                  bool          `json:"complete"`
-	LocalDateTime             time.Time     `json:"localDateTime"`
-	ExecutionDuration         time.Duration `json:"executionDuration"`
+	LocalDateTime             time.Time     `json:"localdatetime"`
+	ExecutionDuration         time.Duration `json:"executionduration"`
 	Failed                    bool          `json:"failed"`
 	Exception                 string        `json:"exception"`
-	Manufacturer              string        `json:"Manufacturer"`
-	Model                     string        `json:"Model"`
-	TotalPhysicalMemory       int           `json:"TotalPhysicalMemory"`
-	NumberOfProcessors        int           `json:"NumberOfProcessors"`
-	NumberOfLogicalProcessors int           `json:"NumberOfLogicalProcessors"`
-	PartOfDomain              bool          `json:"PartOfDomain"`
-	HardwareSerialNumber      string        `json:"HardwareSerialNumber"`
-	BootDriveSerial           string        `json:"BootDriveSerial"`
-	OSArchitecture            string        `json:"OSArchitecture"`
-	OSVersion                 string        `json:"Version"`
-	OSBuildNumber             string        `json:"BuildNumber"`
-	PowerShellVersion         string        `json:"PowerShellVersion"`
-	HostVersion               string        `json:"HostVersion"`
-	HostName                  string        `json:"HostName"`
-	HostUI                    string        `json:"HostUI"`
-	HostCulture               string        `json:"HostCulture"`
-	HostUICulture             string        `json:"HostUICulture"`
-	ModuleName                string        `json:"ModuleName"`
-	ModuleVersion             string        `json:"ModuleVersion"`
-	ModulePath                string        `json:"ModulePath"`
+	Manufacturer              string        `json:"manufacturer"`
+	Model                     string        `json:"model"`
+	TotalPhysicalMemory       int           `json:"totalphysicalmemory"`
+	NumberOfProcessors        int           `json:"numberofprocessors"`
+	NumberOfLogicalProcessors int           `json:"numberoflogicalprocessors"`
+	PartOfDomain              bool          `json:"partofdomain"`
+	HardwareSerialNumber      string        `json:"hardwareserialnumber"`
+	BootDriveSerial           string        `json:"bootdriveserial"`
+	OSArchitecture            string        `json:"osarchitecture"`
+	OSVersion                 string        `json:"version"`
+	OSBuildNumber             string        `json:"buildnumber"`
+	PowerShellVersion         string        `json:"powershellversion"`
+	HostVersion               string        `json:"hostversion"`
+	HostName                  string        `json:"hostname"`
+	HostUI                    string        `json:"hostui"`
+	HostCulture               string        `json:"hostculture"`
+	HostUICulture             string        `json:"hostuiculture"`
+	ModuleName                string        `json:"modulename"`
+	ModuleVersion             string        `json:"moduleversion"`
+	ModulePath                string        `json:"modulepath"`
 }
 
 func GetPing(c *gin.Context) {
