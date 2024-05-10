@@ -48,13 +48,14 @@ func GetGeoLocation(ip string) (float32, float32) {
 
 func GetGeoLocationDatabase() {
 	url := "https://www.ip2location.com/download/?token=vH6gLcMcVBMaibeswIowRFCcbWXsWSGCHeXFxauF5RIMdruzYTVTCzgn6BTHOx21&file=DB5LITEBIN"
+	println("Downloading Geo Location File.")
 	response, err := http.Get(url)
 	if err != nil {
 		println("Failed to Download Geo Location File.")
 	}
 	defer response.Body.Close()
 
-	file, err := os.Create("geodate.bin")
+	file, err := os.Create("geodata.bin")
 	if err != nil {
 		println("Failed to Create Geo Location File.")
 	}
