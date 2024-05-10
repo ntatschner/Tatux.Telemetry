@@ -50,21 +50,22 @@ func GetGeoLocationDatabase() {
 	url := "https://www.ip2location.com/download/?token=vH6gLcMcVBMaibeswIowRFCcbWXsWSGCHeXFxauF5RIMdruzYTVTCzgn6BTHOx21&file=DB5LITEBIN"
 	response, err := http.Get(url)
 	if err != nil {
-		println(err)
+		println("Failed to Download Geo Location File.")
 	}
 	defer response.Body.Close()
 
 	file, err := os.Create("geodate.bin")
 	if err != nil {
-		println(err)
+		println("Failed to Create Geo Location File.")
 	}
 	defer file.Close()
 
 	_, err = io.Copy(file, response.Body)
 	if err != nil {
-		println(err)
+		println("Failed to Copy Geo Location File.")
 	}
-	time.Sleep(24 * time.Hour)
+
 	println("Geo Location File downloaded.")
+	time.Sleep(24 * time.Hour)
 
 }
