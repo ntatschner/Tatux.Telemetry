@@ -31,7 +31,7 @@ func GetClientIP(c *gin.Context) string {
 }
 
 func GetGeoLocation(ip string) (float32, float32) {
-	db, err := ip2location.OpenDB("./IP2LOCATION-LITE-DB11.BIN")
+	db, err := ip2location.OpenDB("./geodata.bin")
 	if err != nil {
 		log.Fatal(err)
 	}
