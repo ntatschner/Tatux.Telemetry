@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"github.com/ntatschner/Tatux.Telemetry/src/api/system"
 )
@@ -44,12 +45,16 @@ func ConnectInfluxDB(url string, token string) {
 	}
 }
 
-func WriteTelemetry(telemetry Telemetry) {
+func WriteTelemetry(telemetry Telemetry, c *gin.Context) {
+	lat, long := system.GetGeoLocation(system.GetClientIP(c))
 	// Create a new point
 	point := influxdb2.NewPointWithMeasurement(strings.ToLower(telemetry.ModuleName)).
 		AddField("id", telemetry.ID).
 		AddTag("commandName", telemetry.CommandName).
 		AddField("localDateTime", telemetry.LocalDateTime).
+		AddField("ipAddress", system.GetClientIP).
+		AddField("latitude", lat).
+		AddField("longitude", long).
 		AddField("executionDuration", int64(telemetry.ExecutionDuration)).
 		AddField("failed", telemetry.Failed).
 		AddField("exception", telemetry.Exception).

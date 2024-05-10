@@ -92,6 +92,6 @@ func PutTelemetry(c *gin.Context) {
 		return
 	} else {
 		// Write the telemetry to InfluxDB
-		WriteTelemetry(telemetry)
+		WriteTelemetry(telemetry, c)
 	}
 }
