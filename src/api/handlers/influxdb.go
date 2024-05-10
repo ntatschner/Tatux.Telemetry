@@ -49,7 +49,6 @@ func WriteTelemetry(telemetry Telemetry) {
 	point := influxdb2.NewPointWithMeasurement(strings.ToLower(telemetry.ModuleName)).
 		AddField("id", telemetry.ID).
 		AddTag("commandName", telemetry.CommandName).
-		AddField("complete", telemetry.Complete).
 		AddField("localDateTime", telemetry.LocalDateTime).
 		AddField("executionDuration", int64(telemetry.ExecutionDuration)).
 		AddField("failed", telemetry.Failed).

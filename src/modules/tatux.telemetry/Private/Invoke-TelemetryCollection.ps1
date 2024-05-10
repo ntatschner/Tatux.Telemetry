@@ -55,7 +55,7 @@ function Invoke-TelemetryCollection {
         'In-Progress' {
             
         }
-        'End' {
+        'End|Module-Load' {
             # Generate hardware specific but none identifying telemetry data for the output
             $Hardware = Get-WmiObject -Class Win32_ComputerSystem
             $bootPartition = Get-WmiObject -Class Win32_DiskPartition | Where-Object -Property bootpartition -eq True
@@ -134,7 +134,7 @@ function Invoke-TelemetryCollection {
             else {
                 $body = $AllData | ConvertTo-Json
                 Invoke-WebRequest @WebRequestArgs -Body $body > $null
-            }        
+            }
         }
     }
 }

@@ -37,7 +37,6 @@ func GetSystemHealth(c *gin.Context) {
 type Telemetry struct {
 	ID                        string        `json:"id"`
 	CommandName               string        `json:"commandname"`
-	Complete                  bool          `json:"complete"`
 	LocalDateTime             time.Time     `json:"localdatetime"`
 	ExecutionDuration         time.Duration `json:"executionduration"`
 	Failed                    bool          `json:"failed"`
