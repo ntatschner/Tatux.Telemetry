@@ -21,6 +21,7 @@ require (
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/influxdata/line-protocol v0.0.0-20200327222509-2487e7298839 // indirect
 	github.com/ip2location/ip2location-go/v9 v9.7.0 // indirect
+	github.com/ip2location/ip2location-io-go/ip2locationio v0.0.0-20230620051435-c2d12bf88058 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect

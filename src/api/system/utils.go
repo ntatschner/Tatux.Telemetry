@@ -8,7 +8,11 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ip2location/ip2location-go/v9"
+	"github.com/ip2location/ip2location-io-go/ip2locationio"
+)
+
+var (
+	ip2location_api_key = GetEnv("IP2LOCATION_API_KEY", "", false)
 )
 
 func GetEnv(key, defaultValue string, throwOnDefault bool) string {
@@ -29,17 +33,25 @@ func GetClientIP(c *gin.Context) string {
 	return clientIP
 }
 
-func GetGeoLocation(ip string) (float32, float32) {
-	db, err := ip2location.OpenDB("DB5LITE.BIN")
+func GetGeoLocation(ip string) (float64, float64) {
+	config, err := ip2locationio.OpenConfiguration(ip2location_api_key)
 	if err != nil {
 		log.Fatalf("Failed to load geolocation database file: %v", err)
 		return 0, 0
 	}
-	defer db.Close()
 
-	results, err := db.Get_all(ip)
+	ipl, err := ip2locationio.OpenIPGeolocation(config)
+
 	if err != nil {
-		log.Fatalf("Failed to get geolocation for IP address %s: %v", ip, err)
+		fmt.Print(err)
+		return 0, 0
+	}
+
+	lang := ""
+	results, err := ipl.LookUp(ip, lang)
+
+	if err != nil {
+		fmt.Print(err)
 		return 0, 0
 	}
 
