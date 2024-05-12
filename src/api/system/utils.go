@@ -30,7 +30,7 @@ func GetClientIP(c *gin.Context) string {
 }
 
 func GetGeoLocation(ip string) (float32, float32) {
-	db, err := ip2location.OpenDB("geodata.bin")
+	db, err := ip2location.OpenDB("DB5LITE.BIN")
 	if err != nil {
 		log.Fatalf("Failed to load geolocation database file: %v", err)
 		return 0, 0
@@ -55,7 +55,7 @@ func GetGeoLocationDatabase() {
 	}
 	defer response.Body.Close()
 
-	file, err := os.Create("geodata.bin")
+	file, err := os.Create("DB5LITE.BIN")
 	if err != nil {
 		log.Fatalf("Failed to Create Geo Location File: %v", err)
 	}
