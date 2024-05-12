@@ -33,12 +33,14 @@ func GetGeoLocation(ip string) (float32, float32) {
 	db, err := ip2location.OpenDB("geodata.bin")
 	if err != nil {
 		log.Fatalf("Failed to load geolocation database file: %v", err)
+		return 0, 0
 	}
 	defer db.Close()
 
 	results, err := db.Get_all(ip)
 	if err != nil {
 		log.Fatalf("Failed to get geolocation for IP address %s: %v", ip, err)
+		return 0, 0
 	}
 
 	return results.Latitude, results.Longitude
