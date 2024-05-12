@@ -25,12 +25,13 @@ func Start() {
 	router.PUT("/api/telemetry", handlers.PutTelemetry)
 	router.GET("/api/health", handlers.GetSystemHealth)
 
-	// Connect to InfluxDB
-	handlers.ConnectInfluxDB(InfluxDBUrl, InfluxDBToken)
 	// Grab Geo Data
-	// system.GetGeoLocationDatabase()
+	system.GetGeoLocationDatabase()
 
 	// Start server
 	log.Println("Starting API server on :" + listenPort)
 	router.Run(":" + listenPort)
+
+	// Connect to InfluxDB
+	handlers.ConnectInfluxDB(InfluxDBUrl, InfluxDBToken)
 }
