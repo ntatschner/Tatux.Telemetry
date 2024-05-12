@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/ip2location/ip2location-go/v9"
@@ -33,7 +32,7 @@ func GetClientIP(c *gin.Context) string {
 func GetGeoLocation(ip string) (float32, float32) {
 	db, err := ip2location.OpenDB("geodata.bin")
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Failed to load geodata file: %s", err)
 	}
 	defer db.Close()
 
@@ -67,6 +66,5 @@ func GetGeoLocationDatabase() {
 	}
 
 	println("Geo Location File downloaded.")
-	time.Sleep(24 * time.Hour)
 
 }

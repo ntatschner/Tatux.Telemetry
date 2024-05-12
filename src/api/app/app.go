@@ -31,5 +31,5 @@ func Start() {
 
 	// Connect to InfluxDB
 	handlers.ConnectInfluxDB(InfluxDBUrl, InfluxDBToken)
-	system.GetGeoLocationDatabase()
+	go system.GetGeoLocationDatabase()
 }
