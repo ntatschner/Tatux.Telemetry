@@ -1,10 +1,7 @@
 package system
 
 import (
-	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -36,14 +33,14 @@ func GetClientIP(c *gin.Context) string {
 func GetGeoLocation(ip string) (float64, float64) {
 	config, err := ip2locationio.OpenConfiguration(ip2location_api_key)
 	if err != nil {
-		log.Fatalf("Failed to load geolocation database file: %v", err)
+		log.Fatalf("Failed to load config: %v", err)
 		return 0, 0
 	}
 
 	ipl, err := ip2locationio.OpenIPGeolocation(config)
 
 	if err != nil {
-		fmt.Print(err)
+		log.Fatalf("Failed to get config.")
 		return 0, 0
 	}
 
@@ -51,32 +48,9 @@ func GetGeoLocation(ip string) (float64, float64) {
 	results, err := ipl.LookUp(ip, lang)
 
 	if err != nil {
-		fmt.Print(err)
+		log.Fatalf("Failed to lookup ip: %s`nError: %t", ip, err)
 		return 0, 0
 	}
 
 	return results.Latitude, results.Longitude
-}
-
-func GetGeoLocationDatabase() {
-	url := "https://www.ip2location.com/download/?token=vH6gLcMcVBMaibeswIowRFCcbWXsWSGCHeXFxauF5RIMdruzYTVTCzgn6BTHOx21&file=DB5LITEBIN"
-	fmt.Println("Downloading Geo Location File.")
-	response, err := http.Get(url)
-	if err != nil {
-		log.Fatalf("Failed to Download Geo Location File: %v", err)
-	}
-	defer response.Body.Close()
-
-	file, err := os.Create("DB5LITE.BIN")
-	if err != nil {
-		log.Fatalf("Failed to Create Geo Location File: %v", err)
-	}
-	defer file.Close()
-
-	_, err = io.Copy(file, response.Body)
-	if err != nil {
-		log.Fatalf("Failed to Copy Geo Location File: %v", err)
-	}
-
-	fmt.Println("Geo Location File downloaded.")
 }

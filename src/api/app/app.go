@@ -25,9 +25,6 @@ func Start() {
 	router.PUT("/api/telemetry", handlers.PutTelemetry)
 	router.GET("/api/health", handlers.GetSystemHealth)
 
-	// Grab Geo Data
-	system.GetGeoLocationDatabase()
-
 	// Start server
 	log.Println("Starting API server on :" + listenPort)
 	router.Run(":" + listenPort)
