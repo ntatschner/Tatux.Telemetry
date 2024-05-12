@@ -28,7 +28,7 @@ func Start() {
 	// Connect to InfluxDB
 	handlers.ConnectInfluxDB(InfluxDBUrl, InfluxDBToken)
 	// Grab Geo Data
-	system.GetGeoLocationDatabase()
+	// system.GetGeoLocationDatabase()
 
 	// Start server
 	log.Println("Starting API server on :" + listenPort)
