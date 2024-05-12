@@ -24,8 +24,10 @@ func GetEnv(key, defaultValue string, throwOnDefault bool) string {
 
 func GetClientIP(c *gin.Context) string {
 	clientIP := c.ClientIP()
+	log.Println("Client IP:", clientIP)
 	if clientIP == "" {
 		clientIP = c.Request.Header.Get("X-Forwarded-For")
+		log.Println("X-Forwarded-For:", clientIP)
 	}
 	return clientIP
 }

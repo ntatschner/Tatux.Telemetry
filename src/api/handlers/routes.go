@@ -77,7 +77,7 @@ func PutTelemetry(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Error reading request body",
 		})
-   log.Printf("Error: %v", err.Error())
+		log.Printf("Error: %v", err.Error())
 		return
 	}
 
