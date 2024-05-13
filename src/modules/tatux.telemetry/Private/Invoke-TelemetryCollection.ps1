@@ -48,7 +48,6 @@ function Invoke-TelemetryCollection {
         "End|Module-Load" {
             Start-Job -Name "TC_Job" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
                 param ($script:GlobalExecutionDuration)
-                $oldProgressPreference = $progressPreference; $progressPreference = 'SilentlyContinue'
                 $WebRequestArgs = @{
                     Uri             = $Using:URI
                     Method          = 'Put'
@@ -134,7 +133,6 @@ function Invoke-TelemetryCollection {
                     $body = $AllData | ConvertTo-Json
                     Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
                 }
-                $progressPreference = $oldProgressPreference
             }
         }
     }
