@@ -3,6 +3,8 @@ package system
 import (
 	"log"
 	"os"
+	"strings"
+	"net"
 
 	"github.com/gin-gonic/gin"
 	"github.com/ip2location/ip2location-io-go/ip2locationio"
@@ -24,10 +26,23 @@ func GetEnv(key, defaultValue string, throwOnDefault bool) string {
 
 func GetClientIP(c *gin.Context) string {
 	clientIP := c.ClientIP()
-	log.Println("Client IP:", clientIP)
-	if clientIP == "" {
-		clientIP = c.Request.Header.Get("X-Forwarded-For")
-		log.Println("X-Forwarded-For:", clientIP)
+	if clientIP != "" {
+		parsedIP := net.ParseIP(clientIP)
+		if parsedIP.IsPrivate() == true {
+			clientIP = strings.Split(c.Request.Header.Get("X-Forwarded-For"), ',')[0]
+			if clientIP != "" {
+				parsedIP := net.ParseIP(clientIP)
+				if parsedIP.IsPrivate() == true {
+					clientIP = "0.0.0.0"
+				} else {
+					log.Println("X-Forwarded-For:", clientIP)
+				}
+			} else {
+				clientIP = "0.0.0.0"
+			}
+		}
+	} else {
+		clientIP = "0.0.0.0"
 	}
 	return clientIP
 }
