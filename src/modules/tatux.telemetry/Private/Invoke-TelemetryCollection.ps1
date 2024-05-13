@@ -46,9 +46,9 @@ function Invoke-TelemetryCollection {
             }
         }
         "End|Module-Load" {
-            Write-Output "Starting Telemetry Collection Job"
             Start-Job -Name "TC_Job" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
                 param ($script:GlobalExecutionDuration)
+                $oldProgressPreference = $progressPreference; $progressPreference = 'SilentlyContinue'
                 $WebRequestArgs = @{
                     Uri             = $Using:URI
                     Method          = 'Put'
@@ -127,13 +127,14 @@ function Invoke-TelemetryCollection {
                             $_.Value = 'Minimal'
                         }
                         $body = $AllData | ConvertTo-Json
-                        Invoke-WebRequest @WebRequestArgs -Body $body -ProgressAction SilentlyContinue | Out-Null
+                        Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
                     }
                 }
                 else {
                     $body = $AllData | ConvertTo-Json
-                    Invoke-WebRequest @WebRequestArgs -Body $body -ProgressAction SilentlyContinue | Out-Null
+                    Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
                 }
+                $progressPreference = $oldProgressPreference
             }
         }
     }
