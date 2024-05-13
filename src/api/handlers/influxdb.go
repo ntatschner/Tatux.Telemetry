@@ -52,7 +52,7 @@ func WriteTelemetry(telemetry Telemetry, c *gin.Context) {
 		AddField("id", telemetry.ID).
 		AddTag("commandName", telemetry.CommandName).
 		AddField("localDateTime", telemetry.LocalDateTime).
-		AddField("ipAddress", system.GetClientIP).
+		AddField("ipAddress", string(system.GetClientIP())).
 		AddField("latitude", lat).
 		AddField("longitude", long).
 		AddField("executionDuration", int64(telemetry.ExecutionDuration)).
