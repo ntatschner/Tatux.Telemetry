@@ -49,7 +49,7 @@ function Invoke-TelemetryCollection {
             Start-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
                 param ($script:GlobalExecutionDuration)
                 # Clear Old Jobs
-                Get-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -State Completed | Remove-Job -Force | Out-Null
+                Get-Job -Name "TC_Job_Trying_To_Be_Unique_9000" | Where-Object State -eq Completed | Remove-Job -Force | Out-Null
                 $WebRequestArgs = @{
                     Uri             = $Using:URI
                     Method          = 'Put'
