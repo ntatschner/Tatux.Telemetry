@@ -46,8 +46,10 @@ function Invoke-TelemetryCollection {
             }
         }
         "End|Module-Load" {
-            Start-Job -Name "TC_Job" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
+            Start-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
                 param ($script:GlobalExecutionDuration)
+                # Clear Old Jobs
+                Get-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -State Completed | Remove-Job -Force | Out-Null
                 $WebRequestArgs = @{
                     Uri             = $Using:URI
                     Method          = 'Put'
@@ -117,9 +119,9 @@ function Invoke-TelemetryCollection {
                 $AllData += @{ID = $AllData.BootDriveSerial + "_" + $AllData.SerialNumber } 
                 $AllData += @{LocalDateTime = $Using:CurrentTime }
                 $AllData += @{ExecutionDuration = [Int64]$($(New-TimeSpan -Start $script:GlobalExecutionDuration -End $(Get-Date)).TotalMilliseconds * 1e6) }
-                $AllData += @{Stage = $Stage }
-                $AllData += @{Failed = $Failed }
-                $AllData += @{Exception = $Exception.ToString() }
+                $AllData += @{Stage = $Using:Stage }
+                $AllData += @{Failed = $Using:Failed }
+                $AllData += @{Exception = $Using:Exception | Out-String }
                 if ($Minimal) {
                     $AllData | ForEach-Object {
                         if ($_.Name -notin @('ID', 'CommandName', 'ModuleName', 'ModuleVersion', 'LocalDateTime', 'ExecutionDuration', 'Stage', 'Failed')) {
