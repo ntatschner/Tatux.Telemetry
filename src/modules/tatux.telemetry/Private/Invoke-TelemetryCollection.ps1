@@ -48,8 +48,6 @@ function Invoke-TelemetryCollection {
         "End|Module-Load" {
             Start-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
                 param ($script:GlobalExecutionDuration)
-                # Clear Old Jobs
-                Get-Job -Name "TC_Job_Trying_To_Be_Unique_9000" | Where-Object State -eq Completed | Remove-Job -Force | Out-Null
                 $WebRequestArgs = @{
                     Uri             = $Using:URI
                     Method          = 'Put'
@@ -136,6 +134,8 @@ function Invoke-TelemetryCollection {
                     Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
                 }
             }
+            # Clear Old Jobs
+            Get-Job -Name "TC_Job_Trying_To_Be_Unique_9000" | Where-Object State -eq Completed | Remove-Job -Force | Out-Null
         }
     }
 }
