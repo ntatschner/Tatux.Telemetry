@@ -28,7 +28,7 @@ function Invoke-TelemetryCollection {
 
     $CurrentTime = (Get-Date).ToString("yyyy-MM-ddTHH:mm:sszzz")
 
-    switch ($Stage) {
+    switch -Regex ($Stage) {
         'Module-Load' {
             if ((Get-Variable -Name 'GlobalExecutionDuration' -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
                 $script:GlobalExecutionDuration = $GlobalExecutionDuration
@@ -46,6 +46,7 @@ function Invoke-TelemetryCollection {
             }
         }
         'End|Module-Load' {
+            Write-Output "Starting Telemetry Collection Job"
             Start-Job -Name "TC_Job" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
                 param ($script:GlobalExecutionDuration)
                 $WebRequestArgs = @{
