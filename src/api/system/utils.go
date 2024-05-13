@@ -2,9 +2,9 @@ package system
 
 import (
 	"log"
+	"net"
 	"os"
 	"strings"
-	"net"
 
 	"github.com/gin-gonic/gin"
 	"github.com/ip2location/ip2location-io-go/ip2locationio"
@@ -29,7 +29,7 @@ func GetClientIP(c *gin.Context) string {
 	if clientIP != "" {
 		parsedIP := net.ParseIP(clientIP)
 		if parsedIP.IsPrivate() == true {
-			clientIP = strings.Split(c.Request.Header.Get("X-Forwarded-For"), ',')[0]
+			clientIP = strings.Split(c.Request.Header.Get("X-Forwarded-For"), ",")[0]
 			if clientIP != "" {
 				parsedIP := net.ParseIP(clientIP)
 				if parsedIP.IsPrivate() == true {
