@@ -45,7 +45,7 @@ function Invoke-TelemetryCollection {
                 $script:GlobalExecutionDuration = Get-Date
             }
         }
-        'End|Module-Load' {
+        "End|Module-Load" {
             Write-Output "Starting Telemetry Collection Job"
             Start-Job -Name "TC_Job" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
                 param ($script:GlobalExecutionDuration)
