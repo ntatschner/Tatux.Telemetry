@@ -28,11 +28,11 @@ func GetClientIP(c *gin.Context) string {
 	clientIP := c.ClientIP()
 	if clientIP != "" {
 		parsedIP := net.ParseIP(clientIP)
-		if parsedIP.IsPrivate() == true {
+		if parsedIP.IsPrivate() {
 			clientIP = strings.Split(c.Request.Header.Get("X-Forwarded-For"), ",")[0]
 			if clientIP != "" {
 				parsedIP := net.ParseIP(clientIP)
-				if parsedIP.IsPrivate() == true {
+				if parsedIP.IsPrivate() {
 					clientIP = "0.0.0.0"
 				} else {
 					log.Println("X-Forwarded-For:", clientIP)
