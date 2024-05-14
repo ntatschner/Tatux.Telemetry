@@ -34,7 +34,7 @@ function Invoke-TelemetryCollection {
     switch -Regex ($Stage) {
         'Module-Load' {
             if ((Get-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
-                Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
+                Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value (Get-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Scope script -ErrorAction SilentlyContinue) -Scope script -Force | Out-Null
             }
             else {
                 New-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $(Get-Date) -Scope script -Force | Out-Null
@@ -42,14 +42,14 @@ function Invoke-TelemetryCollection {
         }
         'Start' {
             if ((Get-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
-                Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
+                Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value (Get-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Scope script -ErrorAction SilentlyContinue) -Scope script -Force | Out-Null
             }
             else {
                 New-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $(Get-Date) -Scope script -Force | Out-Null
             }
         }
         "End|Module-Load" {
-            Start-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ArgumentList $(Get-Variable -Name "GlobalExecutionDuration_$ExecutionID") -ScriptBlock {
+            Start-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ArgumentList $(Get-Variable -Name "GlobalExecutionDuration_$ExecutionID").Value -ScriptBlock {
                 param ($GlobalExecutionDuration)
                 $ExecutionDuration = [Int64]$($(New-TimeSpan -Start $GlobalExecutionDuration -End $(Get-Date)).TotalMilliseconds * 1e6)
                 $WebRequestArgs = @{
