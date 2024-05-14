@@ -37,7 +37,7 @@ function Invoke-TelemetryCollection {
                 Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
             }
             else {
-                New-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
+                New-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $(Get-Date) -Scope script -Force | Out-Null
             }
         }
         'Start' {
@@ -45,7 +45,7 @@ function Invoke-TelemetryCollection {
                 Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
             }
             else {
-                New-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
+                New-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $(Get-Date) -Scope script -Force | Out-Null
             }
         }
         "End|Module-Load" {
