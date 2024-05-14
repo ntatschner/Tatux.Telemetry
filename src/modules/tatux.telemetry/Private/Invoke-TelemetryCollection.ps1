@@ -48,7 +48,7 @@ function Invoke-TelemetryCollection {
         "End|Module-Load" {
             Start-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
                 param ($GlobalExecutionDuration)
-                $GlobalExecutionDuration = [Int64]$($(New-TimeSpan -Start $script:GlobalExecutionDuration -End $(Get-Date)).TotalMilliseconds * 1e6)
+                $GlobalExecutionDuration = [Int64]$($(New-TimeSpan -Start $GlobalExecutionDuration -End $(Get-Date)).TotalMilliseconds * 1e6)
                 $WebRequestArgs = @{
                     Uri             = $Using:URI
                     Method          = 'Put'
