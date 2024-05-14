@@ -140,7 +140,7 @@ function Invoke-TelemetryCollection {
                 }
             }
             # Clear Old Jobs
-            Get-Job -Name "TC_Job_Trying_To_Be_Unique_9000" | Where-Object State -in Completed, Failed | Remove-Job -Force | Out-Null
+            Get-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ErrorAction SilentlyContinue | Where-Object State -in Completed, Failed | Remove-Job -Force -ErrorAction SilentlyContinue | Out-Null
         }
     }
 }
