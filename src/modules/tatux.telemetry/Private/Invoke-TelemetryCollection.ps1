@@ -9,6 +9,9 @@ function Invoke-TelemetryCollection {
         [string]$ModulePath = 'UnknownModulePath',
 
         [string]$CommandName = 'UnknownCommand',
+        
+        [Parameter(Mandatory = $true)]
+        [string]$ExecutionID = 'UnknownExecutionID',
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Start', 'In-Progress', 'End', 'Module-Load')]
@@ -31,22 +34,22 @@ function Invoke-TelemetryCollection {
     switch -Regex ($Stage) {
         'Module-Load' {
             if ((Get-Variable -Name 'GlobalExecutionDuration' -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
-                $script:GlobalExecutionDuration = $GlobalExecutionDuration
+                Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
             }
             else {
-                $script:GlobalExecutionDuration = Get-Date
+                New-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
             }
         }
         'Start' {
             if ((Get-Variable -Name 'GlobalExecutionDuration' -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
-                $script:GlobalExecutionDuration = $GlobalExecutionDuration
+                Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
             }
             else {
-                $script:GlobalExecutionDuration = Get-Date
+                New-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
             }
         }
         "End|Module-Load" {
-            Start-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ArgumentList $script:GlobalExecutionDuration -ScriptBlock {
+            Start-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ArgumentList $(Get-Variable -Name "GlobalExecutionDuration_$ExecutionID") -ScriptBlock {
                 param ($GlobalExecutionDuration)
                 $ExecutionDuration = [Int64]$($(New-TimeSpan -Start $GlobalExecutionDuration -End $(Get-Date)).TotalMilliseconds * 1e6)
                 $WebRequestArgs = @{
