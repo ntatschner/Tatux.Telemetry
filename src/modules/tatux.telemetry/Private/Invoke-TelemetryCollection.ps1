@@ -33,7 +33,7 @@ function Invoke-TelemetryCollection {
 
     switch -Regex ($Stage) {
         'Module-Load' {
-            if ((Get-Variable -Name 'GlobalExecutionDuration' -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
+            if ((Get-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
                 Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
             }
             else {
@@ -41,7 +41,7 @@ function Invoke-TelemetryCollection {
             }
         }
         'Start' {
-            if ((Get-Variable -Name 'GlobalExecutionDuration' -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
+            if ((Get-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Scope script -ErrorAction SilentlyContinue) -and (-Not $ClearTimer)) {
                 Set-Variable -Name "GlobalExecutionDuration_$ExecutionID" -Value $GlobalExecutionDuration -Scope script -Force | Out-Null
             }
             else {
