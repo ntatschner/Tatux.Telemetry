@@ -124,9 +124,10 @@ function Invoke-TelemetryCollection {
                 $AllData += @{Stage = $Using:Stage }
                 $AllData += @{Failed = $Using:Failed }
                 $AllData += @{Exception = $Using:Exception | Out-String }
+                $AllData += @{ExecutionID = $Using:ExecutionID }
                 if ($Minimal) {
                     $AllData | ForEach-Object {
-                        if ($_.Name -notin @('ID', 'CommandName', 'ModuleName', 'ModuleVersion', 'LocalDateTime', 'ExecutionDuration', 'Stage', 'Failed')) {
+                        if ($_.Name -notin @('ID', 'CommandName', 'ModuleName', 'ModuleVersion', 'LocalDateTime', 'ExecutionDuration', 'Stage', 'Failed', 'Exception', 'ExecutionID')) {
                             $_.Value = 'Minimal'
                         }
                         $body = $AllData | ConvertTo-Json

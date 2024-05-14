@@ -36,5 +36,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/telemetry:v0.7,${{ secrets.DOCKER_HUB_USERNAME }}/telemetry:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/telemetry:v0.8,${{ secrets.DOCKER_HUB_USERNAME }}/telemetry:latest
 

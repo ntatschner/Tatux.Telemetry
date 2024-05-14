@@ -56,6 +56,7 @@ func WriteTelemetry(telemetry Telemetry, c *gin.Context) {
 		AddField("latitude", lat).
 		AddField("longitude", long).
 		AddField("executionDuration", int64(telemetry.ExecutionDuration)).
+		AddField("executionID", telemetry.ExecutionID).
 		AddField("failed", telemetry.Failed).
 		AddField("exception", telemetry.Exception).
 		AddField("manufacturer", telemetry.Manufacturer).

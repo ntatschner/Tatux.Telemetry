@@ -39,6 +39,7 @@ type Telemetry struct {
 	CommandName               string        `json:"commandname"`
 	LocalDateTime             time.Time     `json:"localdatetime"`
 	ExecutionDuration         time.Duration `json:"executionduration"`
+	ExecutionID               string        `json:"executionid"`
 	Failed                    bool          `json:"failed"`
 	Exception                 string        `json:"exception"`
 	Manufacturer              string        `json:"manufacturer"`
