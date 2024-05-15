@@ -138,7 +138,7 @@ function Invoke-TelemetryCollection {
                     $body = $AllData | ConvertTo-Json
                     Invoke-WebRequest @WebRequestArgs -Body $body | Out-Null
                 }
-            }
+            } | Out-Null
             # Clear Old Jobs
             Get-Job -Name "TC_Job_Trying_To_Be_Unique_9000" -ErrorAction SilentlyContinue | Where-Object State -in Completed, Failed | Remove-Job -Force -ErrorAction SilentlyContinue | Out-Null
         }
