@@ -35,7 +35,7 @@ func GetClientIP(c *gin.Context) string {
 				if parsedIP.IsPrivate() {
 					clientIP = "0.0.0.0"
 				} else {
-					log.Println("X-Forwarded-For:", clientIP)
+					// log.Println("X-Forwarded-For:", clientIP)
 				}
 			} else {
 				clientIP = "0.0.0.0"
