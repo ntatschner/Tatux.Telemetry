@@ -1,7 +1,6 @@
 # A Simple Telemetry Collection API - Written in Go(lang)
 
 [![Build API in Docker Container and Deploy Container to Registry](https://github.com/ntatschner/Tatux.Telemetry/actions/workflows/api_build_and_deploy.yml/badge.svg)](https://github.com/ntatschner/Tatux.Telemetry/actions/workflows/api_build_and_deploy.yml)
-[![Test and Publish to PSGallery](https://github.com/ntatschner/Tatux.Telemetry/actions/workflows/Publish_Telemetry_Module.yml/badge.svg)](https://github.com/ntatschner/Tatux.Telemetry/actions/workflows/Publish_Telemetry_Module.yml)
 
 ## Overview
 This is a way to collect anonymized metrics about processes - PowerShell functions from a module, CI/CD Pipelines or other automation sources. 
