@@ -51,3 +51,17 @@ type PipelineData struct {
 	RunnerArchitecture		  string
 	SourceControlProvider	  string
 }
+
+type ServiceHealthData struct {
+	ID                        string
+	ServiceName				  string
+	ServiceEndpoint			  string
+	Uptime					  time.Duration
+	CheckInterval			  time.Duration
+	LastCheck				  time.Time
+	NextCheck				  time.Time
+	Failed					  bool
+	Exception				  string
+	FailureCount			  int
+	LocalDateTime             time.Time
+}
