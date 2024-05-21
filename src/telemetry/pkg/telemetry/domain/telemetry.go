@@ -38,3 +38,16 @@ type PowerShellData struct {
 	ModuleVersion             string        
 	ModulePath                string        
 }
+
+type PipelineData struct {
+	ID                        string
+	PipelineName			  string
+	LocalDateTime             time.Time
+	ExecutionDuration         time.Duration
+	ExecutionID               string
+	Failed                    bool
+	Exception                 string
+	RunnerOS				  string
+	RunnerArchitecture		  string
+	SourceControlProvider	  string
+}
