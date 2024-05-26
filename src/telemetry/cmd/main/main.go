@@ -1,9 +1,9 @@
 package main
 
 import (
-	"telemetry/pkg/logging"
-	"telemetry/pkg/telemetry/adapters"
-	"telemetry/pkg/telemetry/domain"
+	"github.com/ntatschner/Tatux.Telemetry/src/telemetry/pkg/logging"
+	"github.com/ntatschner/Tatux.Telemetry/src/telemetry/pkg/telemetry/adapters"
+	"github.com/ntatschner/Tatux.Telemetry/src/telemetry/pkg/telemetry/domain"
 )
 
 func main() {
