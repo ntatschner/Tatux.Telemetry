@@ -3,6 +3,8 @@ package incoming
 import (
 	"encoding/json"
 	"errors"
+	
+	"github.com/ntatschner/Tatux.Telemetry/src/telemetry/pkg/telemetry/domain"
 )
 
 // HandleJSONPayload takes a raw JSON payload and determines whether it should be
