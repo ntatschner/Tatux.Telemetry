@@ -17,7 +17,7 @@ func HandleJSONPayload(payload []byte, dataType string) (interface{}, error) {
 		var data domain.PowerShellData
 		err := json.Unmarshal(payload, &data)
 		if err != nil {
-			logger.Error("Error unmarshalling PowerShellData: ", err)
+			logger.Error("Error unmarshalling PowerShellData: %t", err)
 			return nil, err
 		}
 		return &data, nil
@@ -25,7 +25,7 @@ func HandleJSONPayload(payload []byte, dataType string) (interface{}, error) {
 		var data domain.PipelineData
 		err := json.Unmarshal(payload, &data)
 		if err != nil {
-			logger.Error("Error unmarshalling PipelineData: ", err)
+			logger.Error("Error unmarshalling PipelineData: %t", err)
 			return nil, err
 		}
 		return &data, nil
