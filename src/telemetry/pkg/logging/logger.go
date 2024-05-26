@@ -25,14 +25,14 @@ func NewStdLogger() *StdLogger {
 	}
 }
 
-func (l *StdLogger) Debug(msg string) {
-	l.debugLogger.Println(msg)
+func (l *StdLogger) Debug(msg string, a ...interface{}) {
+	l.debugLogger.Printf(msg, a...)
 }
 
 func (l *StdLogger) Info(msg string) {
 	l.infoLogger.Println(msg)
 }
 
-func (l *StdLogger) Error(msg string) {
-	l.errorLogger.Println(msg)
+func (l *StdLogger) Error(msg string, a ...interface{}) {
+    l.errorLogger.Printf(msg, a...)
 }
