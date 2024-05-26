@@ -1,1 +1,1 @@
-package adapters
+package rest
