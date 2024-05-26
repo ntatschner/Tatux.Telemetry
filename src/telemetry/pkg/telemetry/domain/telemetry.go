@@ -6,48 +6,48 @@ import (
 
 // TelemetryService provides an interface for telemetry services.
 
+type ExecutionData struct {
+	ID                string        `json:"id"`
+	LocalDateTime     time.Time     `json:"localDateTime"`
+	ExecutionDuration time.Duration `json:"executionDuration"`
+	ExecutionID       string        `json:"executionId"`
+	Failed            bool          `json:"failed"`
+	Exception         string        `json:"exception"`
+}
+
 type PowerShellData struct {
-	ID                        string
-	CommandName               string
-	LocalDateTime             time.Time
-	ExecutionDuration         time.Duration
-	ExecutionID               string
-	Failed                    bool
-	Exception                 string
-	Manufacturer              string
-	Model                     string
-	TotalPhysicalMemory       int
-	NumberOfProcessors        int
-	NumberOfLogicalProcessors int
-	PartOfDomain              bool
-	HardwareSerialNumber      string
-	BootDriveSerial           string
-	OSType                    string
-	OSArchitecture            string
-	OSVersion                 string
-	OSBuildNumber             string
-	PowerShellVersion         string
-	HostVersion               string
-	HostName                  string
-	HostUI                    string
-	HostCulture               string
-	HostUICulture             string
-	ModuleName                string
-	ModuleVersion             string
-	ModulePath                string
+	ExecutionData
+	CommandName               string `json:"commandName"`
+	Manufacturer              string `json:"manufacturer"`
+	Model                     string `json:"model"`
+	TotalPhysicalMemory       int    `json:"totalPhysicalMemory"`
+	NumberOfProcessors        int    `json:"numberOfProcessors"`
+	NumberOfLogicalProcessors int    `json:"numberOfLogicalProcessors"`
+	PartOfDomain              bool   `json:"partOfDomain"`
+	HardwareSerialNumber      string `json:"hardwareSerialNumber"`
+	BootDriveSerial           string `json:"bootDriveSerial"`
+	OSType                    string `json:"osType"`
+	OSArchitecture            string `json:"osArchitecture"`
+	OSVersion                 string `json:"osVersion"`
+	OSBuildNumber             string `json:"osBuildNumber"`
+	PowerShellVersion         string `json:"powerShellVersion"`
+	HostVersion               string `json:"hostVersion"`
+	HostName                  string `json:"hostName"`
+	HostUI                    string `json:"hostUI"`
+	HostCulture               string `json:"hostCulture"`
+	HostUICulture             string `json:"hostUICulture"`
+	ModuleName                string `json:"moduleName"`
+	ModuleVersion             string `json:"moduleVersion"`
+	ModulePath                string `json:"modulePath"`
 }
 
 type PipelineData struct {
-	ID                    string
-	PipelineName          string
-	LocalDateTime         time.Time
-	ExecutionDuration     time.Duration
-	ExecutionID           string
-	Failed                bool
-	Exception             string
-	RunnerOS              string
-	RunnerArchitecture    string
-	SourceControlProvider string
+	ExecutionData
+	PipelineName          string `json:"pipelineName"`
+	Exception             string `json:"exception"`
+	RunnerOS              string `json:"runnerOs"`
+	RunnerArchitecture    string `json:"runnerArchitecture"`
+	SourceControlProvider string `json:"sourceControlProvider"`
 }
 
 type ServiceHealthData struct {
