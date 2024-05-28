@@ -63,3 +63,19 @@ type ServiceHealthData struct {
 	FailureCount    int
 	LocalDateTime   time.Time
 }
+
+// concrete type for notification
+
+// user type
+
+	// name, email, group membership
+
+// permission level type
+
+	// admin, power user, guest, custom
+
+// group type
+
+	// logical grouping of users, permission levels
+
+// 
