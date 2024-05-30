@@ -64,18 +64,63 @@ type ServiceHealthData struct {
 	LocalDateTime   time.Time
 }
 
-// concrete type for notification
+// notification type
+
+type Notification struct {
+	ID      string
+	Type    string
+	Message string
+	Time    time.Time
+	Status  string
+}
 
 // user type
 
-	// name, email, group membership
+type User struct {
+	ID              string
+	FirstName       string
+	LastName        string
+	Email           string
+	GroupMembership []Group
+}
 
-// permission level type
+// Group type
+type Group struct {
+	Name            string
+	ID              string
+	PermissionLevel string
+}
 
-	// admin, power user, guest, custom
+type Groups struct {
+	Groups []Group
+}
 
-// group type
+type Permission struct {
+	id   string
+	name string
+}
 
-	// logical grouping of users, permission levels
+func NewPermission(id, name string) Permission {
+	return Permission{id: id, name: name}
+}
 
-// 
+func (p Permission) ID() string {
+	return p.id
+}
+
+func (p Permission) Name() string {
+	return p.name
+}
+
+var (
+	Administrator = NewPermission("1", "Administrator")
+	PowerUser     = NewPermission("2", "Power-User")
+	StandardUser  = NewPermission("3", "StandardUser")
+	Custom        = NewPermission("4", "Custom")
+)
+
+type PermissionLevel struct {
+	ID         string
+	Name       string
+	Permission []Permission
+}
