@@ -1,7 +1,9 @@
 package domain
 
 import (
+	"fmt"
 	"time"
+	
 )
 
 // TelemetryService provides an interface for telemetry services.
@@ -74,6 +76,10 @@ type Notification struct {
 	Status  string
 }
 
+type IDGenerator interface {
+    NewID() string
+}
+
 // user type
 
 type User struct {
@@ -84,11 +90,47 @@ type User struct {
 	GroupMembership []Group
 }
 
+func (u *User) FullName() string {
+	return u.FirstName + " " + u.LastName
+}
+
+func (u *User) String() string {
+    return fmt.Sprintf("ID: %s, Name: %s %s, Email: %s", u.ID, u.FirstName, u.LastName, u.Email)
+}
+
+func NewUser(firstName string, lastName string, email string) *User {
+    return &User{
+        ID:        uuid.New().String(),
+        FirstName: firstName,
+        LastName:  lastName,
+        Email:     email,
+    }
+}
+
+type UserRepository interface {
+	FindById(id string) (*User, error)
+	Save(user *User) error
+	FindByEmail(email string) (*User, error)
+	FetchAll() ([]User, error)
+	FindByLastName(lastName string) ([]User, error)
+	FindByFirstName(firstName string) ([]User, error)
+}
+
 // Group type
 type Group struct {
 	Name            string
 	ID              string
 	PermissionLevel string
+}
+
+func (g *Group) String() string {
+	return fmt.Sprintf("ID: %s, Name: %s, PermissionLevel: %s", g.ID, g.Name, g.PermissionLevel)
+}
+
+type GroupRepository interface {
+	FindById(id string) (*Group, error)
+	Save(group *Group) error
+	FetchAll() ([]Group, error)
 }
 
 type Groups struct {
@@ -118,6 +160,16 @@ var (
 	StandardUser  = NewPermission("3", "StandardUser")
 	Custom        = NewPermission("4", "Custom")
 )
+
+type CustomPermission struct {
+	ID   string
+	Name string
+}
+
+type PermissionRepository interface {
+    FindById(id string) (*CustomPermission, error)
+    Save(permission *CustomPermission) error
+}
 
 type PermissionLevel struct {
 	ID         string
