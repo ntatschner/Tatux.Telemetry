@@ -5,7 +5,10 @@ import (
 	"time"
 )
 
-// TelemetryService provides an interface for telemetry services.
+type BaseAPIPayload struct {
+	SourceType string `json:"sourceType"`
+	Payload	string `json:"payload"`
+}
 
 type ExecutionData struct {
 	ID                string        `json:"id"`
