@@ -3,7 +3,6 @@ package domain
 import (
 	"fmt"
 	"time"
-	
 )
 
 // TelemetryService provides an interface for telemetry services.
@@ -98,9 +97,9 @@ func (u *User) String() string {
     return fmt.Sprintf("ID: %s, Name: %s %s, Email: %s", u.ID, u.FirstName, u.LastName, u.Email)
 }
 
-func NewUser(firstName string, lastName string, email string) *User {
+func NewUser(generator IDGenerator, firstName string, lastName string, email string) *User {
     return &User{
-        ID:        uuid.New().String(),
+        ID:        generator.NewID(),
         FirstName: firstName,
         LastName:  lastName,
         Email:     email,
