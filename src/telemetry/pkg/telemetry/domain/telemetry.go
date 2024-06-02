@@ -178,3 +178,10 @@ type PermissionLevel struct {
 	Name       string
 	Permission []Permission
 }
+
+// Storage interface
+
+type Storage interface {
+	WriteTelemetryData() error
+	ReadTelemetryData() error
+}
