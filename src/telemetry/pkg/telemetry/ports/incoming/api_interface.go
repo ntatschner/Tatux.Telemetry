@@ -15,7 +15,7 @@ import (
 var logger = logging.NewStdLogger()
 // HandleJSONPayload takes a raw JSON payload and determines whether it should be
 // unmarshalled into a PowerShellData or PipelineData struct.
-func HandleJSONPayload(c *gin.Context) {
+func HandleJSONPayload(c *gin.Context) error {
 	var BaseData domain.BaseAPIPayload
 	payload, err := io.ReadAll(c.Request.Body)
 	if err != nil {
@@ -23,18 +23,18 @@ func HandleJSONPayload(c *gin.Context) {
 			"error": "Error reading request body",
 		})
 		logger.Error("Error reading request body: %t", err)
-		return
+		return err
 	}
 
 	err = json.Unmarshal(payload, &BaseData)
 	if err != nil {
 		logger.Error("Error unmarshalling payload: %t", err)
-		return
+		return err
 	}
 	PayloadTest, err := json.Marshal(BaseData.Payload)
 	if err != nil {
 		logger.Error("Error marshalling payload: %t", err)
-		return
+		return err
 	}
 
 	switch BaseData.SourceType {
@@ -43,15 +43,15 @@ func HandleJSONPayload(c *gin.Context) {
 		err := json.Unmarshal(PayloadTest, &data)
 		if err != nil {
 			logger.Error("Error unmarshalling PowerShellData: %t", err)
-			return
+			return err
 		}
-		return &data, nil
+		
 	case "PipelineData":
 		var data domain.PipelineData
 		err := json.Unmarshal(payload, &data)
 		if err != nil {
 			logger.Error("Error unmarshalling PipelineData: %t", err)
-			return nil, err
+			return err
 		}
 		return &data, nil
 	default:
