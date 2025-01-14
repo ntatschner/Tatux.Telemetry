@@ -1,7 +1,7 @@
 FROM golang:latest as builder
 
 LABEL \
-    org.opencontainers.image.authors="quentin.mcgaw@gmail.com" \
+    org.opencontainers.image.authors="ntatschner@gmail.com" \
     org.opencontainers.image.created=$CREATED \
     org.opencontainers.image.version=$VERSION \
     org.opencontainers.image.revision=$COMMIT \
